@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="card card-container">
+    <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+    <p id="profile-name" class="profile-name-card"></p>
+    <form class="form-signin" (ngSubmit)="authentifier()">
+      <span id="reauth-email" class="reauth-email"></span>
+      <input type="email" id="inputEmail" class="form-control" placeholder="exemple@exemple.com" [(ngModel)]="model.email" [ngModelOptions]="{standalone: true}" required autofocus>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" [(ngModel)]="model.password" [ngModelOptions]="{standalone: true}" required>
+      <div id="remember" class="checkbox">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button mat-raised-button  color="accent" type="submit">Se connecter</button>
+
+    </form><!-- /form -->
+    <a href="#" class="forgot-password">
+      Forgot the password?
+    </a>
+  </div><!-- /card-container -->
+</div><!-- /container -->

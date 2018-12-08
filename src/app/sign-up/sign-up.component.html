@@ -1,0 +1,23 @@
+
+<div class="container" >
+  <div style="background-image: url('https://mdbootstrap.com/img/Photos/Others/images/91.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+
+  </div>
+  <div class="card card-container" >
+    <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+    <p id="profile-name" class="profile-name-card"></p>
+    <form class="form-signin" (ngSubmit)="Inscrire()">
+      <span id="reauth-email" class="reauth-email"></span>
+      <input type="email" id="inputEmail" class="form-control" placeholder="exemple@exemple.com" [(ngModel)]="model.email" [ngModelOptions]="{standalone: true}" required autofocus>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" [(ngModel)]="model.password" [ngModelOptions]="{standalone: true}" required>
+      <input type="password" id="inputPassword2" class="form-control" placeholder="Retaper le mot de passe" [(ngModel)]="model.repasse" [ngModelOptions]="{standalone: true}" required>
+      <div class="form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="checkbox" [(ngModel)]="model.typeCompte" [ngModelOptions]="{standalone: true}">
+          <label class="form-check-label" for="checkbox">Compte Livreur</label>
+        </div>
+      </div>
+      <button mat-raised-button  color="accent" type="submit">S'inscrire</button>
+    </form><!-- /form -->
+  </div><!-- /card-container -->
+</div><!-- /container -->
