@@ -1,24 +1,60 @@
-<!--div class="row probootstrap-gutter60 mb50">
-  <div class="col-md-4">
-    <figure><img src="../../assets/img/livreur/denne.jpg" lt="Free Bootstrap Template by uicookies.com" class="img-responsive"></figure>
-  </div>
-  <div class="text col-md-8">
-    <h2 class="probootstrap-heading">Information du profile</h2>
-    <ul>
-      <li> Email :{{model.email}} </li>
-      <li> Nom :{{model.nom}} </li>
-      <li> Prenom :{{model.prenom}} </li>
 
-    </ul>
-    <p></p>
-    <p>Votre profile est non encore complet Merci d'avoir le modifier .</p>
-    <p><a href="#" class="btn btn-primary">Modifier information</a></p>
-  </div>
-</div>
-<button class="btn btn-danger"  (click)="LogOut()">Deconnecter</button-->
+
 
 <div class="container" [ngSwitch]="utili.type">
   <div class="row my-2">
+    <div class="col-lg-3 order-lg-1 text-center">
+      <br>
+      <img src="../../assets/img/user-profile.png" class="mx-auto img-fluid rounded-circle d-block" alt="avatar">
+      <br>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <strong>
+          {{utili.nom + " " + utili.prenom}}
+        </strong>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>dialpad</mat-icon>
+          <span>Redial</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>voicemail</mat-icon>
+          <span>Check voicemail</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications_off</mat-icon>
+          <span>Disable alerts</span>
+        </button>
+      </mat-menu>
+      <br>
+      <br>
+      <ul class="list-group">
+        <li class="list-group-item text-muted">Activité</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Commande</strong></span> {{utili.commandes.length}}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Recommandation</strong></span> {{utili.recommander.length}}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Etat du profil</strong></span> 37</li>
+      </ul>
+      <br>
+      <br>
+      <ul class="list-group" *ngIf="utili.commandes.length==0 || utili.recommander.length==0">
+        <li class="list-group-item text-muted">Bienvenue</li>
+        <li class="list-group-item text-center" *ngIf="utili.commandes.length==0" >
+          <button mat-raised-button style="position: center" color="primary" routerLink="" >Passer commande</button>
+        </li>
+        <li class="list-group-item text-center" *ngIf="utili.recommander.length==0">
+          <button mat-raised-button style="position: center" color="primary" routerLink="">Recommander un livreur</button>
+        </li>
+      </ul>
+
+      <br>
+      <br>
+      <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+
+        </div>
+      </div>
+    </div>
     <div class="col-lg-9 order-lg-2">
       <mat-tab-group>
         <mat-tab label="Information">
@@ -47,160 +83,116 @@
           </div>
         </mat-tab>
         <mat-tab label="Commande">
-          <div class="py-4" style="overflow-x: hidden">
-            <h5 class="mb-3">User Profile</h5>
-            <div class="row">
-              <div class="col-md-6">
-                <h6>About</h6>
-                <p>
-                  Web Designer, UI/UX Engineer
-                </p>
-                <h6>Hobbies</h6>
-                <p>
-                  Indie music, skiing and hiking. I love the great outdoors.
-                </p>
-              </div>
-              <div class="col-md-6">
-                <h6>Recent badges</h6>
-                <a href="#" class="badge badge-dark badge-pill">html5</a>
-                <a href="#" class="badge badge-dark badge-pill">react</a>
-                <a href="#" class="badge badge-dark badge-pill">codeply</a>
-                <a href="#" class="badge badge-dark badge-pill">angularjs</a>
-                <a href="#" class="badge badge-dark badge-pill">css3</a>
-                <a href="#" class="badge badge-dark badge-pill">jquery</a>
-                <a href="#" class="badge badge-dark badge-pill">bootstrap</a>
-                <a href="#" class="badge badge-dark badge-pill">responsive-design</a>
-                <hr>
-                <span class="badge badge-primary"><i class="fa fa-user"></i> 900 Followers</span>
-                <span class="badge badge-success"><i class="fa fa-cog"></i> 43 Forks</span>
-                <span class="badge badge-danger"><i class="fa fa-eye"></i> 245 Views</span>
-              </div>
-              <div class="col-md-12">
-                <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
-                <table class="table table-sm table-hover table-striped">
-                  <tbody>
-                  <tr>
-                    <td>
-                      <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+          <div class="site-section bg-light">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                  <div class="rounded border jobs-wrap">
+                    <a *ngIf="utili.commandes.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                      <div class="job-details h-100">
+                        <div class="p-3 align-self-center">
+                          <h3>Aucune commande effectuer</h3>
+                        </div>
+                      </div>
+                      <div class="job-category align-self-center">
+                        <div class="p-3">
+                          <span routerLink="/commande" class="text-info p-2 rounded border border-info">Commander</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a *ngFor="let cmd of utili.commandes" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                      <div class="job-details h-100">
+                        <div class="p-3 align-self-center">
+                          <h3>{{cmd.titre}}</h3>
+                          <div class="d-block d-lg-flex">
+                            <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{cmd.lignes.length}} Produits</div>
+                            <div class="mr-3"><span class="icon-room mr-1"></span> Commition {{cmd.total * 0.10}} </div>
+                            <div><span class="icon-money mr-1"></span> Total {{cmd.total}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="job-category align-self-center">
+                        <div class="p-3">
+                          <span class="text-info p-2 rounded border border-info">Zakaria</span>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
         </mat-tab>
         <mat-tab *ngSwitchCase=1 label="Recommendation">
-          <div class=" py-4" style="overflow-x: hidden">
-              <h5 class="mb-3">User Profile</h5>
+          <div class="site-section bg-light">
+            <div class="container">
               <div class="row">
-                <div class="col-md-6">
-                  <h6>About</h6>
-                  <p>
-                    Web Designer, UI/UX Engineer
-                  </p>
-                  <h6>Hobbies</h6>
-                  <p>
-                    Indie music, skiing and hiking. I love the great outdoors.
-                  </p>
-                </div>
-                <div class="col-md-6">
-                  <h6>Recent badges</h6>
-                  <a href="#" class="badge badge-dark badge-pill">html5</a>
-                  <a href="#" class="badge badge-dark badge-pill">react</a>
-                  <a href="#" class="badge badge-dark badge-pill">codeply</a>
-                  <a href="#" class="badge badge-dark badge-pill">angularjs</a>
-                  <a href="#" class="badge badge-dark badge-pill">css3</a>
-                  <a href="#" class="badge badge-dark badge-pill">jquery</a>
-                  <a href="#" class="badge badge-dark badge-pill">bootstrap</a>
-                  <a href="#" class="badge badge-dark badge-pill">responsive-design</a>
-                  <hr>
-                  <span class="badge badge-primary"><i class="fa fa-user"></i> 900 Followers</span>
-                  <span class="badge badge-success"><i class="fa fa-cog"></i> 43 Forks</span>
-                  <span class="badge badge-danger"><i class="fa fa-eye"></i> 245 Views</span>
-                </div>
-                <div class="col-md-12">
-                  <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
-                  <table class="table table-sm table-hover table-striped">
-                    <tbody>
-                    <tr>
-                      <td>
-                        <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
+                <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                  <div class="rounded border jobs-wrap">
+                    <a *ngIf="utili.recommander.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                      <div class="job-details h-100">
+                        <div class="p-3 align-self-center">
+                          <h3>Aucune commande effectuer</h3>
+                        </div>
+                      </div>
+                      <div class="job-category align-self-center">
+                        <div class="p-3">
+                          <span routerLink="/commande" class="text-info p-2 rounded border border-info">Commander</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a *ngFor="let cmd of utili.recommander" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                      <div class="job-details h-100">
+                        <div class="p-3 align-self-center">
+                          <h3>{{cmd.titre}}</h3>
+                          <div class="d-block d-lg-flex">
+                            <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{cmd.lignes.length}} Produits</div>
+                            <div class="mr-3"><span class="icon-room mr-1"></span> Commition {{cmd.total * 0.10}} </div>
+                            <div><span class="icon-money mr-1"></span> Total {{cmd.total}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="job-category align-self-center">
+                        <div class="p-3">
+                          <span class="text-info p-2 rounded border border-info">Zakaria</span>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
                 </div>
               </div>
+            </div>
+
           </div>
         </mat-tab>
         <mat-tab label="Edit Profile">
           <div class="py-4" style="overflow-x: hidden">
-            <form role="form">
+            <form role="form" (ngSubmit)="SauvgarderEditForm()">
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Nom</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="text" >
+                  <input class="form-control" type="text" placeholder="saisie votre nom" [(ngModel)]="formEdit.nom" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Prénom</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="text" >
+                  <input class="form-control" type="text" placeholder="saisie votre prenom" [(ngModel)]="formEdit.prenom" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
-              <div class="form-group row">
+              <div *ngIf="utili.type==1" class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Adresse</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="text" >
+                  <input class="form-control" type="text" placeholder="Saisie votre adresse" [(ngModel)]="formEdit.adresse" [ngModelOptions]="{standalone: true}" >
                 </div>
               </div>
 
               <div class="form-group row">
                 <label class="col-lg-4 col-form-label form-control-label"></label>
                 <div class="col-lg-6">
-                  <button mat-raised-button color="warn" style="margin-right: 15px">Reset</button>
-                  <button mat-raised-button color="primary">Sauvgarder</button>
+                  <button mat-raised-button  (click)="ResetEditForm()" color="warn" style="margin-right: 15px">Reset</button>
+                  <button mat-raised-button type="submit" color="primary">Sauvgarder</button>
                 </div>
               </div>
             </form>
@@ -245,18 +237,7 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-    <div class="col-lg-3 order-lg-1 text-center">
-      <img src="//placehold.it/150" class="mx-auto img-fluid rounded-circle d-block" alt="avatar">
-      <h6 class="mt-2">Upload a different photo</h6>
-      <label class="custom-file">
-        <input type="file" id="file" class="custom-file-input">
-        <span class="custom-file-control">Choose file</span>
-        <mat-icon svgIcon="thumbs-up"></mat-icon>
-        <mat-icon svgIcon="thumbs-down"></mat-icon>
-        <i class="fa fa-thumbs-up"></i>
 
-      </label>
-    </div>
   </div>
 </div>
 

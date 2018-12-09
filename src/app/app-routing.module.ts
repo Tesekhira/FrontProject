@@ -14,7 +14,8 @@ class UserToken {
 class Permissions {
   canActivate(user: UserToken): boolean {
     const utili=JSON.parse(localStorage.getItem("utilisateur"));
-    if(utili.token != null)
+
+    if(utili!=null && utili.token != null)
        return true;
     return false;
   }
@@ -48,8 +49,8 @@ const routes: Routes = [
   },
   {
     path:"commande",
-    component:CommandeComponent,
-    canActivate: [CanActivateTeam]
+    component:CommandeComponent
+    //,canActivate: [CanActivateTeam]
   },
   {
     path:"profile",
