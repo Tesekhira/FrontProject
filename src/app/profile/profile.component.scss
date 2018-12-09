@@ -1,15 +1,77 @@
-/*.text{
-  margin-top: 100px;
-}
 
-.img-responsive{
-  margin-left: 100px;
-  margin-top: 80px;
-  border-radius: 50%;
-}
-button{
-float: right;
-}*/
+@media (min-width: 768px) {
+  .site-section {
+    padding: 7em 0; } }
+.site-section.site-section-sm {
+  padding: 4em 0; }
+
+.site-section-heading {
+  font-size: 30px;
+  color: #25262a;
+  position: relative; }
+.site-section-heading:before {
+  content: "";
+  left: 0%;
+  top: 0;
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: #28a745; }
+.site-section-heading.text-center:before {
+  content: "";
+  left: 50%;
+  top: 0;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: #28a745; }
+
+
+
+.jobs-wrap .job-item {
+  display: block;
+  border-bottom: 1px solid #ced4da !important;
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
+  position: relative;
+  z-index: 1; }
+.jobs-wrap .job-item:hover {
+  background: #fff;
+  -webkit-box-shadow: 4px 0 40px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 0 40px 0 rgba(0, 0, 0, 0.1);
+  z-index: 2; }
+.jobs-wrap .job-item.last {
+  border-bottom: none !important; }
+.jobs-wrap .job-item.fulltime {
+  border-left: 3px solid #26baee; }
+.jobs-wrap .job-item.freelance {
+  border-left: 3px solid #f8b500; }
+.jobs-wrap .job-item.partime {
+  border-left: 3px solid #f23a2e; }
+.jobs-wrap .job-item .company-logo {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100px;
+  flex: 0 0 100px; }
+.jobs-wrap .job-item .company-logo img {
+  max-width: 50px;
+  border-radius: 4px; }
+.jobs-wrap .job-item h3 {
+  font-size: 17px; }
+.jobs-wrap .job-item .job-details {
+  width: calc(100% - 250px); }
+@media (max-width: 1199.98px) {
+  .jobs-wrap .job-item .job-details {
+    width: 100%;
+    text-align: center; } }
+.jobs-wrap .job-item .job-category {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 150px;
+  flex: 0 0 150px;
+  text-align: center; }
+
 .example-container {
   display: flex;
   flex-direction: column;
