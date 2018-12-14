@@ -1,0 +1,35 @@
+<h1 class="anass">Liste des livreurs</h1>
+<div class="anas">
+  <div class="rounded border jobs-wrap">
+    <div *ngFor="let liv of livreurs">
+      <a routerLink="" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+        <div class="company-logo blank-logo text-center text-md-left pl-3">
+          <img src="../../assets/img/livreur/denne.jpg" alt="Image" class="rounded-circle">
+        </div>
+        <div class="job-details h-100">
+          <div class="p-3 align-self-center">
+            <h3>{{liv.email}}</h3>
+            <h5>{{liv.nom + " " +liv.prenom}}</h5>
+            <div class="d-block d-lg-flex">
+              <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{liv.nom + " " + liv.prenom}}  " à votre disposition"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-category align-self-center">
+          <div class="p-3">
+            <div class="one">
+              <span style="margin-right: 5px;">0</span>
+              <i class="material-icons" id="first">thumb_up</i>
+            </div>
+            <div class="two">
+              <span style="margin-right: 5px;">{{liv.recommandation.length}}</span>
+              <i class="material-icons" id="second">thumb_down</i>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+

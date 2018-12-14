@@ -25,6 +25,8 @@ import {
 } from "@angular/material";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatTabsModule} from '@angular/material/tabs';
+import { LivreurComponent } from './livreur/livreur.component';
+import {AuthentificationService} from "./Authentification/authentification.service";
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     AccueilComponent,
     ErrorComponent,
     ProfileComponent,
-    CommandeComponent
+    CommandeComponent,
+    LivreurComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +64,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatListModule,
     MatTabsModule
   ],
-  providers: [],
+  providers: [AuthentificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

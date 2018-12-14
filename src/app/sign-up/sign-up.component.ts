@@ -2,6 +2,7 @@ import { Component, OnInit  } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { HttpHeaders } from '@angular/common/http';
 import {Router} from "@angular/router";
+import {AuthentificationService} from "../Authentification/authentification.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -15,48 +16,26 @@ export class SignUpComponent implements OnInit {
     repasse:'',
     typeCompte:false
   };
-
-  //'Authorization': 'my-auth-token'
-   httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  };
-  constructor(private http:HttpClient,private router: Router) { }
+  pass2Error:boolean=false;
+  emailIncorrect:Number=0;
+  constructor(public auth:AuthentificationService,private router: Router) { }
 
   ngOnInit() {
   }
 
   Inscrire():void{
-    let url="http://localhost:8080/app/livreur/create";
-    let url2="http://localhost:8080/app/client/create";
-
-    if(this.model.password == this.model.repasse) {
-      if(this.model.typeCompte)
-      {
-        this.http.post(url,this.model,this.httpOptions).subscribe(
-          res=>{
-            location.reload();
-          },
-            err=>{
-            alert("Votre commande non executer");
-          }
-        );
-      }else{
-
-        this.http.post(url2,this.model,this.httpOptions).subscribe(
-          data => {
-            localStorage.setItem("utilisateur",JSON.stringify(data));
-            this.router.navigate(['/profile']);
-          },
-          error => {
-            console.log("Error", error);
-          }
-        );
-      }
-
+    if(this.auth.validateEmail(this.model.email)==false){
+      this.emailIncorrect=2;
+    } else if(this.model.password == this.model.repasse) {
+      this.emailIncorrect=0;
+     this.auth.Inscrire(this.model).then(()=>{
+       this.pass2Error=false;
+       if(this.auth.isLoggedIn())
+         this.router.navigate(['/profile']);
+     });
     }else{
-      alert("Erreur mot de passe ");
+      this.emailIncorrect=0;
+      this.pass2Error=true;
     }
 
   }

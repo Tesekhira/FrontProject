@@ -121,11 +121,12 @@
 
       <button mat-button class="menuC" routerLink="">Accueil</button>
       <button mat-button class="menuC" routerLink="/commande">Commander</button>
-      <button mat-raised-button  *ngIf="utili==null || utili.token==''" class="menuC" color="accent" routerLink="/signin">Sign in</button>
-      <button mat-raised-button *ngIf="utili==null || utili.token==''"  class="menuC" color="accent" routerLink="/signup">Sign up</button>
+      <button mat-button class="menuC" routerLink="/livreur">Livreur</button>
+      <button mat-raised-button  *ngIf="!auth.isLoggedIn()" class="menuC" color="accent" routerLink="/signin">Sign in</button>
+      <button mat-raised-button *ngIf="!auth.isLoggedIn()"  class="menuC" color="accent" routerLink="/signup">Sign up</button>
     </div>
 
-      <div style="overflow-x: hidden;margin-right: 5px;" class="company-logo blank-logo text-center text-md-left pl-3" [matMenuTriggerFor]="menu" *ngIf="utili !=null && utili.token!=''" >
+      <div style="overflow-x: hidden;margin-right: 5px;" class="company-logo blank-logo text-center text-md-left pl-3" [matMenuTriggerFor]="menu" *ngIf="auth.isLoggedIn()" >
         <img src="../../assets/img/user-profile.png" alt="Image" style="height: 45px; width: 45px;">
       </div>
 

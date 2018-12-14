@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {AuthentificationService} from "../Authentification/authentification.service";
 
 @Component({
   selector: 'app-sign-in',
@@ -12,27 +13,26 @@ export class SignInComponent implements OnInit {
     email:'',
     password:''
    }
-  //'Authorization': 'my-auth-token'
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  };
-  constructor(private http:HttpClient,private router: Router) { }
-
+   emailIncorrect:Number=0;
+  constructor(private http:HttpClient,private router: Router,public auth:AuthentificationService) { }
   ngOnInit() {
   }
+
   authentifier():void{
-    let url2="http://localhost:8080/app/user/login";
-    this.http.post(url2,this.model,this.httpOptions).subscribe(
-      data => {
-        localStorage.setItem("utilisateur",JSON.stringify(data));
-        this.router.navigate(['/profile']);
-      },
-      error => {
-        console.log("Error", error);
-      }
-    );
+    if(this.model.email=='' || this.model.password==''){
+        this.emailIncorrect=1;
+    }else if(this.auth.validateEmail(this.model.email)==false){
+      this.emailIncorrect=2;
+    }else{
+      this.emailIncorrect=0;
+      this.auth.LogIn(this.model).then(()=>{
+        if(this.auth.isLoggedIn())
+          this.router.navigate(['/profile']);
+        else
+          console.log("this password / email invalide");
+      });
+    }
+
   }
 
 
