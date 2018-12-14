@@ -7,6 +7,7 @@ import {AccueilComponent} from "./accueil/accueil.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {CommandeComponent} from "./commande/commande.component";
 import {Observable} from "rxjs";
+import {LivreurComponent} from "./livreur/livreur.component";
 
 class UserToken {
   token:string;
@@ -51,6 +52,10 @@ const routes: Routes = [
     path:"commande",
     component:CommandeComponent
     //,canActivate: [CanActivateTeam]
+  },
+  {
+    path:"livreur",
+    component:LivreurComponent
   },
   {
     path:"profile",

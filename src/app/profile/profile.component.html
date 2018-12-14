@@ -133,29 +133,25 @@
                     <a *ngIf="utili.recommander.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
-                          <h3>Aucune commande effectuer</h3>
+                          <h3>Aucune recommandation des livreurs effectuer</h3>
                         </div>
                       </div>
                       <div class="job-category align-self-center">
                         <div class="p-3">
-                          <span routerLink="/commande" class="text-info p-2 rounded border border-info">Commander</span>
+                          <span routerLink="/commande" class="text-info p-2 rounded border border-info">Recommander</span>
                         </div>
                       </div>
                     </a>
-                    <a *ngFor="let cmd of utili.recommander" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                    <a *ngFor="let rec of utili.recommander" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
-                          <h3>{{cmd.titre}}</h3>
-                          <div class="d-block d-lg-flex">
-                            <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{cmd.lignes.length}} Produits</div>
-                            <div class="mr-3"><span class="icon-room mr-1"></span> Commition {{cmd.total * 0.10}} </div>
-                            <div><span class="icon-money mr-1"></span> Total {{cmd.total}}</div>
-                          </div>
+                          <h3>Livreur  :  Zakaria</h3>
                         </div>
                       </div>
                       <div class="job-category align-self-center">
                         <div class="p-3">
-                          <span class="text-info p-2 rounded border border-info">Zakaria</span>
+                          <span *ngIf="rec.etat == true" class="text-info p-2 rounded "><i class="material-icons up">thumb_up</i></span>
+                          <span *ngIf="rec.etat == false" class="text-info p-2 rounded "><i class="material-icons down">thumb_down</i></span>
                         </div>
                       </div>
                     </a>

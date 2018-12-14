@@ -5,6 +5,9 @@
   </div>
   <div class="card card-container" >
     <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+    <span *ngIf="auth.getCode()==500"  class="text-center" style="color:darkred;"> Email saisie est déja utiliser</span>
+    <span *ngIf="pass2Error==true" class="text-center" style="color:darkred;"> Les mots de passe ne correspond pas.Veuillez réssayez </span>
+    <span *ngIf="emailIncorrect==2" class="text-center" style="color:darkred;"> Email invalide</span>
     <p id="profile-name" class="profile-name-card"></p>
     <form class="form-signin" (ngSubmit)="Inscrire()">
       <span id="reauth-email" class="reauth-email"></span>
