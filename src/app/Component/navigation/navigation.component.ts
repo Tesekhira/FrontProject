@@ -1,6 +1,6 @@
 import {Component, OnInit, OnChanges, SimpleChanges, SimpleChange, Input} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthentificationService} from "../Authentification/authentification.service";
+import {AuthentificationService} from "../../Service/Authentification/authentification.service";
 
 @Component({
   selector: 'app-navigation',
