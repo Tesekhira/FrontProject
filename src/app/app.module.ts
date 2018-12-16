@@ -4,17 +4,17 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { FooterComponent } from './footer/footer.component';
-import { SignInComponent } from './sign-in/sign-in.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
-import { AccueilComponent } from './accueil/accueil.component';
-import { ErrorComponent } from './error/error.component';
+import { NavigationComponent } from './Component/navigation/navigation.component';
+import { FooterComponent } from './Component/footer/footer.component';
+import { SignInComponent } from './Component/sign-in/sign-in.component';
+import { SignUpComponent } from './Component/sign-up/sign-up.component';
+import { AccueilComponent } from './Component/accueil/accueil.component';
+import { ErrorComponent } from './Component/error/error.component';
 
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import { ProfileComponent } from './profile/profile.component';
-import { CommandeComponent } from './commande/commande.component';
+import { ProfileComponent } from './Component/profile/profile.component';
+import { CommandeComponent } from './Component/commande/commande.component';
 import { BrowserAnimationsModule ,NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
@@ -25,8 +25,10 @@ import {
 } from "@angular/material";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatTabsModule} from '@angular/material/tabs';
-import { LivreurComponent } from './livreur/livreur.component';
-import {AuthentificationService} from "./Authentification/authentification.service";
+import { LivreurComponent } from './Component/livreur/livreur.component';
+import {AuthentificationService} from "./Service/Authentification/authentification.service";
+import {HttpService} from "./Service/Http/http.service";
+import {DataService} from "./Service/Data/data.service";
 
 
 @NgModule({
@@ -64,7 +66,7 @@ import {AuthentificationService} from "./Authentification/authentification.servi
     MatListModule,
     MatTabsModule
   ],
-  providers: [AuthentificationService],
+  providers: [AuthentificationService,HttpService,DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpService} from "../Http/http.service";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,9 @@ export class AuthentificationService {
 
   private _isLoggedIn:boolean=false;
   private _codeError:Number;
-  constructor(private http:HttpClient) {
+  private _token:string='';
+  private _turePass:string='';
+  constructor(private http:HttpService) {
     this.init();
   }
 
@@ -21,22 +23,24 @@ export class AuthentificationService {
   }
 
   getUser(){
-    return localStorage.getItem("utilisateur");
+    return JSON.parse(localStorage.getItem("utilisateur"));
   }
   setUser(newVal){
-    localStorage.setItem("utilisateur",newVal);
+    localStorage.setItem("utilisateur",JSON.stringify(newVal));
   }
   Logout(){
     this._isLoggedIn=false;
     this._codeError=0;
+    this._token='';
     localStorage.removeItem("utilisateur");
   }
   LogIn(model){
     let url2="http://localhost:8080/app/user/login";
-    return this.http.post(url2,model).toPromise().then(
+      return this.http.postHttp(url2,model,1,null).then(
       data => {
                           localStorage.setItem("utilisateur",JSON.stringify(data));
                           this._isLoggedIn=true;
+                          this._turePass=model.password;
                         },
       error => {
                          this._isLoggedIn=false;
@@ -54,7 +58,7 @@ export class AuthentificationService {
     let url="http://localhost:8080/app/livreur/create";
     let url2="http://localhost:8080/app/client/create";
     if(model.typeCompte){
-      return this.http.post(url,model).toPromise().then(
+        return this.http.postHttp(url,model,1,null).then(
         res=>{
           this._isLoggedIn=true;
         },
@@ -63,8 +67,9 @@ export class AuthentificationService {
               this._codeError=err.status;
         }
       );
-    }else{
-      return this.http.post(url2,model).toPromise().then(
+    }
+    else{
+      return this.http.postHttp(url,model,1,null).then(
         res=>{
           this._isLoggedIn=true;
         },
@@ -80,5 +85,8 @@ export class AuthentificationService {
   validateEmail(email) {
     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return re.test(String(email).toLowerCase());
+  }
+  getPass(){
+    return this._turePass;
   }
 }

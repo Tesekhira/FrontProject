@@ -1,15 +1,15 @@
 
 
 
-<div class="container" [ngSwitch]="utili.type">
+<div class="container" >
   <div class="row my-2">
     <div class="col-lg-3 order-lg-1 text-center">
       <br>
-      <img src="../../assets/img/user-profile.png" class="mx-auto img-fluid rounded-circle d-block" alt="avatar">
+      <img src="../../../assets/img/user-profile.png" class="mx-auto img-fluid rounded-circle d-block" alt="avatar">
       <br>
       <button mat-button [matMenuTriggerFor]="menu">
         <strong>
-          {{utili.nom + " " + utili.prenom}}
+          {{model.nom + " " + model.prenom}}
         </strong>
       </button>
       <mat-menu #menu="matMenu">
@@ -30,18 +30,19 @@
       <br>
       <ul class="list-group">
         <li class="list-group-item text-muted">Activité</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Commande</strong></span> {{utili.commandes.length}}</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Recommandation</strong></span> {{utili.recommander.length}}</li>
+        <li class="list-group-item text-right" *ngIf="TypeCompte==1"><span class="pull-left"><strong>Commande</strong></span> {{model.commandes.length}}</li>
+        <li class="list-group-item text-right" *ngIf="TypeCompte==1"><span class="pull-left"><strong>Recommandation</strong></span> {{model.recommander.length}}</li>
+        <li class="list-group-item text-right" *ngIf="TypeCompte==2"><span class="pull-left"><strong>Recommandation</strong></span> {{model.recommandation.length}}</li>
         <li class="list-group-item text-right"><span class="pull-left"><strong>Etat du profil</strong></span> 37</li>
       </ul>
       <br>
       <br>
-      <ul class="list-group" *ngIf="utili.commandes.length==0 || utili.recommander.length==0">
+      <ul class="list-group" *ngIf=" TypeCompte == 1 && (model.commandes.length==0 || model.recommander.length==0)">
         <li class="list-group-item text-muted">Bienvenue</li>
-        <li class="list-group-item text-center" *ngIf="utili.commandes.length==0" >
+        <li class="list-group-item text-center" *ngIf="model.commandes.length==0" >
           <button mat-raised-button style="position: center" color="primary" routerLink="" >Passer commande</button>
         </li>
-        <li class="list-group-item text-center" *ngIf="utili.recommander.length==0">
+        <li class="list-group-item text-center" *ngIf="model.recommander.length==0">
           <button mat-raised-button style="position: center" color="primary" routerLink="">Recommander un livreur</button>
         </li>
       </ul>
@@ -56,7 +57,7 @@
       </div>
     </div>
     <div class="col-lg-9 order-lg-2">
-      <mat-tab-group>
+      <mat-tab-group [ngSwitch]="TypeCompte">
         <mat-tab label="Information">
           <div class="py-4" style="overflow-x: hidden">
             <h5 class="mb-3">Profile client</h5>
@@ -88,7 +89,7 @@
               <div class="row">
                 <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
                   <div class="rounded border jobs-wrap">
-                    <a *ngIf="utili.commandes.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                    <a *ngIf="model.commandes.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
                           <h3>Aucune commande effectuer</h3>
@@ -100,7 +101,7 @@
                         </div>
                       </div>
                     </a>
-                    <a *ngFor="let cmd of utili.commandes" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                    <a *ngFor="let cmd of model.commandes" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
                           <h3>{{cmd.titre}}</h3>
@@ -130,7 +131,7 @@
               <div class="row">
                 <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
                   <div class="rounded border jobs-wrap">
-                    <a *ngIf="utili.recommander.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                    <a *ngIf="model.recommander.length == 0" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
                           <h3>Aucune recommandation des livreurs effectuer</h3>
@@ -142,7 +143,7 @@
                         </div>
                       </div>
                     </a>
-                    <a *ngFor="let rec of utili.recommander" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+                    <a *ngFor="let rec of model.recommander" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
                           <h3>Livreur  :  Zakaria</h3>
@@ -164,7 +165,7 @@
         </mat-tab>
         <mat-tab label="Edit Profile">
           <div class="py-4" style="overflow-x: hidden">
-            <form role="form" (ngSubmit)="SauvgarderEditForm()">
+            <form role="form"  >
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Nom</label>
                 <div class="col-lg-6">
@@ -177,10 +178,10 @@
                   <input class="form-control" type="text" placeholder="saisie votre prenom" [(ngModel)]="formEdit.prenom" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
-              <div *ngIf="utili.type==1" class="form-group row">
+              <div *ngIf="TypeCompte==1" class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label">Adresse</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="text" placeholder="Saisie votre adresse" [(ngModel)]="formEdit.adresse" [ngModelOptions]="{standalone: true}" >
+                  <input class="form-control" type="text" placeholder="Saisie votre adresse" [(ngModel)]="formEdit.adress" [ngModelOptions]="{standalone: true}" >
                 </div>
               </div>
 
@@ -188,7 +189,7 @@
                 <label class="col-lg-4 col-form-label form-control-label"></label>
                 <div class="col-lg-6">
                   <button mat-raised-button  (click)="ResetEditForm()" color="warn" style="margin-right: 15px">Reset</button>
-                  <button mat-raised-button type="submit" color="primary">Sauvgarder</button>
+                  <button mat-raised-button (click)="SauvgarderEditForm()" color="primary">Sauvgarder</button>
                 </div>
               </div>
             </form>
@@ -197,35 +198,37 @@
         <mat-tab label="Edit Compte">
           <div class=" py-4" style="overflow-x: hidden">
             <form role="form">
+              <span *ngIf="passwordError==2" class="text-center" style="color:darkred;"> Mot de pass incorrecte</span>
+              <span *ngIf="passwordError==1" class="text-center" style="color:darkred;"> Nouveau mot de pass non identique</span>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label form-control-label ">Email</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="email" >
+                  <input class="form-control" type="email" [(ngModel)]="formEdit.email" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label ">Mot de passe Actuel</label>
+                <label class="col-lg-3 col-form-label form-control-label " >Mot de passe Actuel</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="password" >
+                  <input class="form-control" type="password" [(ngModel)]="formEdit.mypass" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label ">Nouveau mot de passe</label>
+                <label class="col-lg-3 col-form-label form-control-label " >Nouveau mot de passe</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="password" >
+                  <input class="form-control" type="password" [(ngModel)]="formEdit.nvPass" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label ">Confirmer mot de passe</label>
+                <label class="col-lg-3 col-form-label form-control-label " >Confirmer mot de passe</label>
                 <div class="col-lg-6">
-                  <input class="form-control" type="password" >
+                  <input class="form-control" type="password" [(ngModel)]="formEdit.nv2Pass" [ngModelOptions]="{standalone: true}">
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-4 col-form-label form-control-label"></label>
                 <div class="col-lg-6">
-                  <button mat-raised-button color="warn" style="margin-right: 15px">Reset</button>
-                  <button mat-raised-button color="primary">Sauvgarder</button>
+                  <button mat-raised-button (click)="ResetCompteForm()" color="warn" style="margin-right: 15px">Reset</button>
+                  <button mat-raised-button (click)="SauvgarderCompteEdit()" color="primary">Sauvgarder</button>
                 </div>
               </div>
             </form>

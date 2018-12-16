@@ -1,13 +1,13 @@
 import {Injectable, NgModule} from '@angular/core';
 import {Routes, RouterModule, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {SignInComponent} from "./sign-in/sign-in.component";
-import {SignUpComponent} from "./sign-up/sign-up.component";
-import {ErrorComponent} from "./error/error.component";
-import {AccueilComponent} from "./accueil/accueil.component";
-import {ProfileComponent} from "./profile/profile.component";
-import {CommandeComponent} from "./commande/commande.component";
+import {SignInComponent} from "./Component/sign-in/sign-in.component";
+import {SignUpComponent} from "./Component/sign-up/sign-up.component";
+import {ErrorComponent} from "./Component/error/error.component";
+import {AccueilComponent} from "./Component/accueil/accueil.component";
+import {ProfileComponent} from "./Component/profile/profile.component";
+import {CommandeComponent} from "./Component/commande/commande.component";
 import {Observable} from "rxjs";
-import {LivreurComponent} from "./livreur/livreur.component";
+import {LivreurComponent} from "./Component/livreur/livreur.component";
 
 class UserToken {
   token:string;

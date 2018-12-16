@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {AuthentificationService} from "../Authentification/authentification.service";
+import {AuthentificationService} from "../../Service/Authentification/authentification.service";
 
 @Component({
   selector: 'app-sign-in',
