@@ -24,4 +24,13 @@ router-outlet,mat-sidenav-content{
 mat-sidenav{
   margin-top:54px;
 }
+.mat-badge.hide-text .mat-badge-content {
+  color: transparent;
+}
+.mat-badge.orange .mat-badge-content{
+  background-color: orange;
+}
+.mat-badge.red .mat-badge-content{
+  background-color: red;
+}
 

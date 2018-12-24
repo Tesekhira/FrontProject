@@ -51,6 +51,10 @@
   border-left: 3px solid #f8b500; }
 .jobs-wrap .job-item.partime {
   border-left: 3px solid #f23a2e; }
+.jobs-wrap .job-item.succes {
+  border-left: 3px solid #28a745; }
+.jobs-wrap .job-item.vide {
+  border-left: 3px solid #3e4955; }
 .jobs-wrap .job-item .company-logo {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 100px;
@@ -85,4 +89,16 @@
 }
 .down{
   color: red;
+}
+.gris{
+  color:gray;
+}
+.mat-badge.hide-text .mat-badge-content {
+  color: transparent;
+}
+.mat-badge.orange .mat-badge-content{
+  background-color: orange;
+}
+.mat-badge.red .mat-badge-content{
+  background-color: red;
 }

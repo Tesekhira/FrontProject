@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router, NavigationExtras} from '@angular/router';
 import {DataService} from '../../Service/Data/data.service';
+import {HttpService} from "../../Service/Http/http.service";
+import {AuthentificationService} from "../../Service/Authentification/authentification.service";
+import {ToastService} from "../../Service/Toast/toast.service";
 
 
 @Component({
@@ -10,18 +12,14 @@ import {DataService} from '../../Service/Data/data.service';
   styleUrls: ['./livreur.component.scss']
 })
 export class LivreurComponent implements OnInit {
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-  livreurs = [];
-  all = [];
-  fixall = [];
+
+  livreurs = null;
+  all = null;
+  fixall = null;
   moin = [];
   plus = [];
   input = '';
-  constructor(public http: HttpClient, private router: Router, private Send: DataService) { }
+  constructor(public http: HttpService, private router: Router, private Send: DataService,private auth: AuthentificationService,private toast:ToastService) { }
 
   ngOnInit() {
     this.chargerLivreur();
@@ -29,30 +27,31 @@ export class LivreurComponent implements OnInit {
   }
 
   onSelect(liv) {
-    if (liv.etat_compte === 1 || liv.etat_compte === 0) {
+    if (liv.etat_compte !== -1  ) {
       // console.log(liv.etat_compte);
       this.Send.setLivreur(liv);
       this.router.navigate(['commande']);
+    }else if(liv.etat_compte === -1)
+    {
+      this.toast.CreateToast('warning','Livreur non disponible','Choisir un autre livreur');
     }
   }
 
 
   chargerLivreur(): void {
     const url = 'http://localhost:8080/app/livreur/all';
-    this.http.get(url, this.httpOptions).subscribe(
-      data => {
-        // console.log(data);
-        this.all = <any[]>data;
-        this.fixall = <any[]>data;
-        this.livreurs = <any[]>data;
+    this.http.getHttp(url,1,null).then(
+      data =>{
+        this.all = data;
+        this.fixall =  data;
+        this.livreurs = data;
         this.recomliv();
         this.trierLivreursparrecom();
-
-      },
-      error => {
-        console.log('Error', error);
+      },err =>{
+        console.log('Error', err);
       }
     );
+
   }
 
   recomliv(): void {

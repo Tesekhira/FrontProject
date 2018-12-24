@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {DataService} from '../../Service/Data/data.service';
 import {AuthentificationService} from '../../Service/Authentification/authentification.service';
 import {HttpService} from '../../Service/Http/http.service';
+import {ToastService} from "../../Service/Toast/toast.service";
 
 @Component({
   selector: 'app-commande',
@@ -22,19 +23,21 @@ export class CommandeComponent implements OnInit {
   };*/
 
   model: CommandeView = {
-    client_id: null,
+    titre : "",
+    client_id: this.auth.getUser().id,
     livreur_id: 3,
     etat_cmd : 0,
     lignes: [],
-    type_cmd: false,
+    type_cmd: 0,
   };
   tmp: CommandeView = null;
   livreur: any = null;
-
+  Commande = false;
   constructor(private http: HttpService,
               private router: Router,
               private servicedata: DataService,
-              private auth: AuthentificationService) { }
+              private auth: AuthentificationService,
+              private toast:ToastService) { }
 
   ngOnInit() {
     this.utili = this.auth.getUser();
@@ -43,7 +46,7 @@ export class CommandeComponent implements OnInit {
     if (this.tmp !== null) {
       this.model = this.tmp;
     } else {
-      this.model.lignes[this.model.lignes.length] = {nom_prod: 'test', quantite: null, prix_prod: null};
+      this.model.lignes[this.model.lignes.length] = {nom_prod: '', quantite: null, prix_prod: null};
       this.servicedata.setCommande(this.model);
     }
     console.log(this.servicedata.getCommande());
@@ -58,16 +61,20 @@ export class CommandeComponent implements OnInit {
     if (this.livreur) {
       if ((this.livreur.etat_compte == 1 ) ||
         (this.livreur.etat_compte == 0 ) ||
-        ((this.livreur.etat_compte == 2) && (this.model.type_cmd == false))) {
+        ((this.livreur.etat_compte == 2) && (this.model.type_cmd == 0))) {
          if (this.auth.isLoggedIn() === true)  {
-           this.model.client_id = this.utili.id;
+           //this.model.client_id = this.utili.id;
+           if(this.Commande)
+             this.model.type_cmd = 1;
+           else
+             this.model.type_cmd = 0;
            this.http.postHttp(url2, this.model, 2, this.utili).then(
              data => {
                this.servicedata.setCommande(null);
                this.router.navigate(['/']);
              },
              error => {
-               console.log('Error', error);
+               console.log('Error #### ', error);
              }
            );
          } else {
@@ -75,9 +82,11 @@ export class CommandeComponent implements OnInit {
            this.router.navigate(['/signin']);
          }
        } else {
-         if ((this.livreur.etat_compte == 2) && (this.model.type_cmd == true)) {
+         if ((this.livreur.etat_compte == 2) && (this.model.type_cmd == 1)) {
            this.errliv = 1;
            this.msgerr = 'veuillez choisir un autre livreur';
+           this.toast.CreateToast('warning','Livreur non disponible','Choisir un autre livreur pour effectuer une commande expresse');
+
          }
        }
 
@@ -92,14 +101,11 @@ export class CommandeComponent implements OnInit {
     this.arr[this.arr.length] = this.arr.length + 1;
     this.model.lignes[this.model.lignes.length] = {nom_prod: '', quantite: null, prix_prod: null};
     this.servicedata.setCommande(this.model);
-    console.log(this.servicedata.getCommande());
   }
   deleteLC(id: any): void {
-    /*var elem = document.getElementById(id);
-    elem.remove();*/
     this.model.lignes.splice(id, 1);
     this.servicedata.setCommande(this.model);
-    console.log(this.servicedata.getCommande());
+
   }
 
 
@@ -111,11 +117,12 @@ export class CommandeComponent implements OnInit {
 
 }
 export interface CommandeView {
+  titre : string;
   client_id: number;
   livreur_id: number;
   etat_cmd: number;
   lignes: LcView[];
-  type_cmd: boolean;
+  type_cmd: number;
 
 }
 

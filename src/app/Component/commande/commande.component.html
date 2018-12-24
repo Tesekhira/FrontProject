@@ -10,8 +10,6 @@
           <h3>{{livreur.nom + ' ' +livreur.prenom}} </h3>
           <div class="d-block d-lg-flex">
             <div class="mr-3">{{livreur.email}}</div>
-            <div class="mr-3"><span class="icon-room mr-1"></span> New York</div>
-            <div><span class="icon-money mr-1"></span> $55000 &mdash; 70000</div>
           </div>
         </div>
       </div>
@@ -32,11 +30,12 @@
 
 <mat-card class="matcardCmd" >
   <form class="example-form" (ngSubmit)="envoyer()">
-
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Titre commande" required [(ngModel)]="model.titre" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
 
     <div *ngFor="let l of model.lignes;index as i" [id]="i">
       <mat-card class="matcardLC" >
-        {{i}}
         <button mat-fab  class="deleteLC" *ngIf="model.lignes.length>1" (click)="deleteLC(i)">
           <mat-icon >delete_forever</mat-icon>
         </button>
@@ -61,7 +60,7 @@
 
     </div>
         <label class="container">Commande Express
-          <input type="checkbox" [(ngModel)]="model.type_cmd" [ngModelOptions]="{standalone: true}">
+          <input type="checkbox" [(ngModel)]="Commande" [ngModelOptions]="{standalone: true}">
           <span class="checkmark"></span>
         </label>
 
@@ -72,4 +71,3 @@
 
 </mat-card>
 
-test{{model|json}}

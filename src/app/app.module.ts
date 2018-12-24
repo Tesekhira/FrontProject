@@ -11,25 +11,28 @@ import { SignUpComponent } from './Component/sign-up/sign-up.component';
 import { AccueilComponent } from './Component/accueil/accueil.component';
 import { ErrorComponent } from './Component/error/error.component';
 
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 import { ProfileComponent } from './Component/profile/profile.component';
 import { CommandeComponent } from './Component/commande/commande.component';
-import { BrowserAnimationsModule , NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule ,NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
   MatCheckboxModule,
   MatIconModule, MatListModule,
   MatMenuModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
-  MatToolbarModule, MatInputModule, MatFormFieldModule, MatCardModule
-} from '@angular/material';
-import {FlexLayoutModule} from '@angular/flex-layout';
+  MatToolbarModule, MatInputModule, MatFormFieldModule, MatDialogModule, MatBadgeModule
+} from "@angular/material";
+import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatTabsModule} from '@angular/material/tabs';
 import { LivreurComponent } from './Component/livreur/livreur.component';
-import {AuthentificationService} from './Service/Authentification/authentification.service';
-import {HttpService} from './Service/Http/http.service';
-import {DataService} from './Service/Data/data.service';
-
+import {AuthentificationService} from "./Service/Authentification/authentification.service";
+import {HttpService} from "./Service/Http/http.service";
+import {DataService} from "./Service/Data/data.service";
+import { ModalComponent } from './Component/modal/modal.component';
+import {ToastService} from "./Service/Toast/toast.service";
+import { ToastrModule } from 'ng6-toastr-notifications';
+import { MatCardModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,8 @@ import {DataService} from './Service/Data/data.service';
     ErrorComponent,
     ProfileComponent,
     CommandeComponent,
-    LivreurComponent
+    LivreurComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -65,9 +69,14 @@ import {DataService} from './Service/Data/data.service';
     MatSidenavModule,
     MatListModule,
     MatTabsModule,
+    MatDialogModule,
+    ToastrModule.forRoot(),
+    MatBadgeModule,
     MatCardModule
   ],
-  providers: [AuthentificationService, HttpService, DataService],
+  exports: [ ModalComponent ],
+  entryComponents:[ModalComponent],
+  providers: [AuthentificationService,HttpService,DataService,ToastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

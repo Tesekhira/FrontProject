@@ -30,8 +30,8 @@ export class SignUpComponent implements OnInit {
       this.emailIncorrect=0;
      this.auth.Inscrire(this.model).then(()=>{
        this.pass2Error=false;
-       if(this.auth.isLoggedIn())
-         this.router.navigate(['/profile']);
+       if(this.auth.isLoggedIn()===false && this.auth.getCode()!=500)
+         this.router.navigate(['/signin']);
      });
     }else{
       this.emailIncorrect=0;
