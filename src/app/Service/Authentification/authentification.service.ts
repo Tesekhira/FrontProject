@@ -1,81 +1,80 @@
 import { Injectable } from '@angular/core';
-import {HttpService} from "../Http/http.service";
+import {HttpService} from '../Http/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
 
-  private _isLoggedIn:boolean=false;
-  private _codeError:Number;
-  private _token:string='';
-  private _turePass:string='';
-  constructor(private http:HttpService) {
+  private _isLoggedIn = false;
+  private _codeError: Number;
+  private _token = '';
+  private _turePass = '';
+  constructor(private http: HttpService) {
     this.init();
   }
 
-  init(){
-    return localStorage.getItem("utilisateur")==null? this._isLoggedIn=false : this._isLoggedIn=true;
+  init() {
+    return localStorage.getItem('utilisateur') == null ? this._isLoggedIn = false : this._isLoggedIn = true;
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     return this._isLoggedIn;
   }
 
-  getUser(){
-    return JSON.parse(localStorage.getItem("utilisateur"));
+  getUser() {
+    return JSON.parse(localStorage.getItem('utilisateur'));
   }
-  setUser(newVal){
-    localStorage.setItem("utilisateur",JSON.stringify(newVal));
+  setUser(newVal) {
+    localStorage.setItem('utilisateur', JSON.stringify(newVal));
   }
-  Logout(){
-    this._isLoggedIn=false;
-    this._codeError=0;
-    this._token='';
-    localStorage.removeItem("utilisateur");
+  Logout() {
+    this._isLoggedIn = false;
+    this._codeError = 0;
+    this._token = '';
+    localStorage.removeItem('utilisateur');
   }
-  LogIn(model){
-    let url2="http://localhost:8080/app/user/login";
-      return this.http.postHttp(url2,model,1,null).then(
+  LogIn(model) {
+    const url2 = 'http://localhost:8080/app/user/login';
+      return this.http.postHttp(url2, model, 1, null).then(
       data => {
-                          localStorage.setItem("utilisateur",JSON.stringify(data));
-                          this._isLoggedIn=true;
-                          this._turePass=model.password;
+                          localStorage.setItem('utilisateur', JSON.stringify(data));
+                          this._isLoggedIn = true;
+                          this._turePass = model.password;
                         },
       error => {
-                         this._isLoggedIn=false;
-                         this._codeError=error.status;
-                          console.log("Error", error.status);
+                         this._isLoggedIn = false;
+                         this._codeError = error.status;
+                          console.log('Error', error.status);
                        }
           );
 
   }
-  getCode(){
+  getCode() {
     return this._codeError;
   }
 
-  Inscrire(model){
-    let url="http://localhost:8080/app/livreur/create";
-    let url2="http://localhost:8080/app/client/create";
-    if(model.typeCompte){
-        return this.http.postHttp(url,model,1,null).then(
-        res=>{
-          this._isLoggedIn=true;
+  Inscrire(model) {
+    const url = 'http://localhost:8080/app/livreur/create';
+    const url2 = 'http://localhost:8080/app/client/create';
+    if (model.typeCompte) {
+        return this.http.postHttp(url, model, 1, null).then(
+        res => {
+          this._isLoggedIn = true;
         },
-        err=>{
-              this._isLoggedIn=false;
-              this._codeError=err.status;
+        err => {
+              this._isLoggedIn = false;
+              this._codeError = err.status;
         }
       );
-    }
-    else{
-      return this.http.postHttp(url,model,1,null).then(
-        res=>{
-          this._isLoggedIn=true;
+    } else {
+      return this.http.postHttp(url, model, 1, null).then(
+        res => {
+          this._isLoggedIn = true;
         },
-        err=>{
-          this._isLoggedIn=false;
-          this._codeError=err.status;
+        err => {
+          this._isLoggedIn = false;
+          this._codeError = err.status;
         }
       );
     }
@@ -83,10 +82,10 @@ export class AuthentificationService {
   }
 
   validateEmail(email) {
-    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return re.test(String(email).toLowerCase());
   }
-  getPass(){
+  getPass() {
     return this._turePass;
   }
 }

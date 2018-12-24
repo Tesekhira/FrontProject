@@ -7,3 +7,181 @@
   margin-top: 80px;
   border-radius: 50%;
 }
+
+.example-full-width {
+  width: 100%;
+}
+.matcardCmd{
+  width: 70%;
+  margin: 10px auto;
+}
+.matcardLC{
+  width: 90%;
+  margin-bottom: 10px;
+}
+.deleteLC{
+  float: right;
+  background-color: red;
+}
+.addlC{
+  float: right;
+}
+
+
+/***
+livreur
+ */
+.addLiv{
+  margin: auto;
+}
+.site-section {
+  padding: 3em 0; }
+@media (min-width: 520px) {
+  .site-section {
+    padding: 7em 0; } }
+.site-section.site-section-sm {
+  padding: 4em 0; }
+
+.site-section-heading {
+  font-size: 30px;
+  color: #25262a;
+  position: relative; }
+.site-section-heading:before {
+  content: "";
+  left: 0%;
+  top: 0;
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: #28a745; }
+.site-section-heading.text-center:before {
+  content: "";
+  left: 50%;
+  top: 0;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: #28a745; }
+
+
+.jobs-wrap .job-item {
+  display: block;
+  border-bottom: 1px solid #ced4da !important;
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
+  position: relative;
+  z-index: 1; }
+.jobs-wrap .job-item:hover {
+  background: #fff;
+  -webkit-box-shadow: 4px 0 40px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 0 40px 0 rgba(0, 0, 0, 0.1);
+  z-index: 2; }
+.jobs-wrap .job-item.last {
+  border-bottom: none !important; }
+.jobs-wrap .job-item.fulltime {
+  border-left: 3px solid #26baee; }
+.jobs-wrap .job-item.freelance {
+  border-left: 3px solid #f8b500; }
+.jobs-wrap .job-item.partime {
+  border-left: 3px solid #f23a2e; }
+.jobs-wrap .job-item .company-logo {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100px;
+  flex: 0 0 100px; }
+.jobs-wrap .job-item .company-logo img {
+  max-width: 50px;
+  border-radius: 4px; }
+.jobs-wrap .job-item h3 {
+  font-size: 17px; }
+.jobs-wrap .job-item .job-details {
+  width: calc(100% - 250px); }
+@media (max-width: 1199.98px) {
+  .jobs-wrap .job-item .job-details {
+    width: 100%;
+    text-align: center; } }
+.jobs-wrap .job-item .job-category {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 150px;
+  flex: 0 0 150px;
+  text-align: center; }
+
+.example-margin {
+  margin: 0 10px;
+}
+
+
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #1cab19;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.erreur{
+  color: rgba(255, 11, 0, 0.63);
+  margin: auto;
+}
