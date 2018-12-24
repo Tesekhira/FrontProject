@@ -115,22 +115,62 @@
     </button>
     <span><img src="../assets/img/logo/logo_mini.png"></span>
     <span style="margin-top: 5px;">Tesekhira</span>
+
     <span class="example-spacer"></span>
     <div fxShow="true" fxHide.lt-md >
       <!-- The following menu items will be hidden on both SM and XS screen sizes -->
-
       <button mat-button class="menuC" routerLink="">Accueil</button>
       <button mat-button class="menuC" routerLink="/commande">Commander</button>
       <button mat-button class="menuC" routerLink="/livreur">Livreur</button>
       <button mat-raised-button  *ngIf="!auth.isLoggedIn()" class="menuC" color="accent" routerLink="/signin">Sign in</button>
       <button mat-raised-button *ngIf="!auth.isLoggedIn()"  class="menuC" color="accent" routerLink="/signup">Sign up</button>
+      <button mat-icon-button *ngIf="auth.isLoggedIn() && auth.getTypeCompte() === 2" [matMenuTriggerFor]="state">
+        <mat-icon *ngIf="auth.getUser().etat_compte == 1" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text" >notifications</mat-icon>
+        <mat-icon *ngIf="auth.getUser().etat_compte == 0" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text orange" >notifications</mat-icon>
+        <mat-icon *ngIf="auth.getUser().etat_compte == -1" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text red" >notifications</mat-icon>
+      </button>
     </div>
+    <button mat-icon-button *ngIf="auth.isLoggedIn() && auth.getTypeCompte() === 2" [matMenuTriggerFor]="notification">
+      <mat-icon matBadge = {{auth.getNbNotification().length}} matBadgeColor="accent" >shopping_cart</mat-icon>
+    </button>
+    <mat-menu #notification="matMenu">
+      <button *ngFor="let l of auth.getNbNotification()" mat-menu-item>
+        <mat-icon >add_shopping_cart</mat-icon>
+        <span>
+          {{l.titre}}
+        </span>
+        <span *ngIf="l.type_cmd === 1" class="text-success p-2 ">Normal</span>
+        <span *ngIf="l.type_cmd === 0" class="text-success p-2 ">Expresse</span>
+      </button>
+    </mat-menu>
 
-      <div style="overflow-x: hidden;margin-right: 5px;" class="company-logo blank-logo text-center text-md-left pl-3" [matMenuTriggerFor]="menu" *ngIf="auth.isLoggedIn()" >
+
+    <mat-menu #state="matMenu">
+      <button  mat-menu-item>
+        <mat-icon  matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text">person</mat-icon>
+        <span>
+          Disponible
+        </span>
+      </button>
+      <button  mat-menu-item>
+        <mat-icon matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text orange">person</mat-icon>
+        <span>
+          Occupé
+        </span>
+      </button>
+      <button  mat-menu-item>
+        <mat-icon matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text red">person</mat-icon>
+        <span>
+          Hors-ligne
+        </span>
+      </button>
+    </mat-menu>
+
+      <div style="overflow-x: hidden;margin-right: 5px;" *ngIf="auth.isLoggedIn()"  class="company-logo blank-logo text-center text-md-left pl-3" [matMenuTriggerFor]="Setting"  >
         <img src="../../assets/img/user-profile.png" alt="Image" style="height: 45px; width: 45px;">
       </div>
 
-       <mat-menu #menu="matMenu" style="overflow-x: hidden;overflow-x: hidden;margin-top: 10px;">
+       <mat-menu #Setting="matMenu" style="overflow-x: hidden;overflow-x: hidden;margin-top: 10px;">
          <button mat-menu-item routerLink="/profile">Profile</button>
          <button mat-menu-item (click)="LogOut()">Déconnecter</button>
         </mat-menu>
@@ -142,8 +182,9 @@
     <mat-nav-list>
       <a routerLink="" mat-list-item>Accueil</a>
       <a routerLink="/commande" mat-list-item>Commander</a>
-      <a routerLink="/signin" mat-list-item>Sign in</a>
-      <a routerLink="/signup" mat-list-item>Sign up</a>
+      <a routerLink="/livreur" mat-list-item>Livreur</a>
+      <a *ngIf="!auth.isLoggedIn()"  routerLink="/signin" mat-list-item>Sign in</a>
+      <a *ngIf="!auth.isLoggedIn()"  routerLink="/signup" mat-list-item>Sign up</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content fxFlexFill >

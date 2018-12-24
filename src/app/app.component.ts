@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import './Component/modal/modal.component.scss';
 
 @Component({
   selector: 'app-root',
