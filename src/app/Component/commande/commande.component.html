@@ -1,11 +1,75 @@
-<div class="row probootstrap-gutter60 mb50">
-  <div class="col-md-4">
-    <figure><img src="../../assets/img/livreur/denne.jpg" lt="Free Bootstrap Template by uicookies.com" class="img-responsive"></figure>
+<mat-card class="matcardCmd">
+  <span *ngIf="errliv==1" class="erreur">{{msgerr}}</span>
+  <div class="rounded border jobs-wrap"  *ngIf="livreur!=null" >
+    <div class="job-item d-block d-md-flex align-items-center fulltime" ngclass="fulltime:livreur.e">
+      <div class="company-logo blank-logo text-center text-md-left pl-3">
+        <img src="../../assets/img/livreur/denne.jpg" alt="Image" class="img-fluid mx-auto">
+      </div>
+      <div class="job-details h-100">
+        <div class="p-3 align-self-center">
+          <h3>{{livreur.nom + ' ' +livreur.prenom}} </h3>
+          <div class="d-block d-lg-flex">
+            <div class="mr-3">{{livreur.email}}</div>
+            <div class="mr-3"><span class="icon-room mr-1"></span> New York</div>
+            <div><span class="icon-money mr-1"></span> $55000 &mdash; 70000</div>
+          </div>
+        </div>
+      </div>
+      <div class="job-category align-self-center">
+        <div class="p-3">
+          <a routerLink="/livreur" (click)="changeLiv()"><span class="text-info p-2 rounded border border-info">changer</span></a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="text col-md-8">
-    <h2 class="probootstrap-heading">Information professionnel du livreur</h2>
-    <p>The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.</p>
-    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-    <p><a href="#" class="btn btn-primary">Changer livreur</a></p>
+  <div class="col-md-12 text-center mt-5 addLiv" *ngIf="livreur==null" >
+    <button mat-raised-button  color="accent" routerLink="/livreur">
+      <mat-icon>add</mat-icon>
+      Choisir Livreur
+    </button>
   </div>
-</div>
+</mat-card>
+
+<mat-card class="matcardCmd" >
+  <form class="example-form" (ngSubmit)="envoyer()">
+
+
+    <div *ngFor="let l of model.lignes;index as i" [id]="i">
+      <mat-card class="matcardLC" >
+        {{i}}
+        <button mat-fab  class="deleteLC" *ngIf="model.lignes.length>1" (click)="deleteLC(i)">
+          <mat-icon >delete_forever</mat-icon>
+        </button>
+        <mat-card-title>Produit</mat-card-title>
+
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Produit " required [(ngModel)]="l.nom_prod" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Quantité " required [(ngModel)]="l.quantite" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Prix Maximal " required [(ngModel)]="l.prix_prod" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <button mat-fab  class="addlC" color="accent" *ngIf="i==(model.lignes.length-1)" (click)="addLC()">
+          <mat-icon>add</mat-icon>
+        </button>
+
+      </mat-card>
+
+    </div>
+        <label class="container">Commande Express
+          <input type="checkbox" [(ngModel)]="model.type_cmd" [ngModelOptions]="{standalone: true}">
+          <span class="checkmark"></span>
+        </label>
+
+
+    <button mat-raised-button  color="accent" type="submit">envoyer commande</button>
+  </form>
+
+
+</mat-card>
+
+test{{model|json}}

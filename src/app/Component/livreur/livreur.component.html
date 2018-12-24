@@ -1,17 +1,28 @@
 <h1 class="anass">Liste des livreurs</h1>
+
+
+
 <div class="anas">
-  <div class="rounded border jobs-wrap">
-    <div *ngFor="let liv of livreurs">
-      <a routerLink="" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
+
+  <input type="text" id="myInput" (keyup)="myFunction()" placeholder="Search for names.." title="Type in a name" [(ngModel)]="input" >
+  <a (click)="reset()" class="buttonreset">reset</a>
+  <div class="rounded border jobs-wrap" >
+
+    <div *ngFor="let liv of livreurs;index as i" >
+
+      <span class="disponibilité dispo" *ngIf="liv.etat_compte==1" (click)="afficher(1)">Disponible</span>
+      <span class="disponibilité occuper" *ngIf="liv.etat_compte==0 || liv.etat_compte==2" (click)="afficher(0)">occupé</span>
+      <span class="disponibilité non-dispo" *ngIf="liv.etat_compte==-1" (click)="afficher(-1)">Non Disponible</span>
+      <a  (click)="onSelect(liv)" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime" id="myUL">
         <div class="company-logo blank-logo text-center text-md-left pl-3">
           <img src="../../assets/img/livreur/denne.jpg" alt="Image" class="rounded-circle">
         </div>
         <div class="job-details h-100">
-          <div class="p-3 align-self-center">
+          <div class="p-3 align-self-center" id="myli">
             <h3>{{liv.email}}</h3>
-            <h5>{{liv.nom + " " +liv.prenom}}</h5>
+            <h5 id="a">{{liv.nom + " " +liv.prenom+' : '+liv.id}}</h5>
             <div class="d-block d-lg-flex">
-              <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{liv.nom + " " + liv.prenom}}  " à votre disposition"</div>
+              <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{liv.nom + " " + liv.prenom}}  est à votre disposition</div>
             </div>
           </div>
         </div>
@@ -19,17 +30,22 @@
         <div class="job-category align-self-center">
           <div class="p-3">
             <div class="one">
-              <span style="margin-right: 5px;">0</span>
+              <span style="margin-right: 5px;">{{plus[i]}}</span>
               <i class="material-icons" id="first">thumb_up</i>
             </div>
             <div class="two">
-              <span style="margin-right: 5px;">{{liv.recommandation.length}}</span>
+              <span style="margin-right: 5px;">{{moin[i]}}</span>
               <i class="material-icons" id="second">thumb_down</i>
             </div>
           </div>
         </div>
       </a>
+
+
     </div>
   </div>
 </div>
+
+
+
 

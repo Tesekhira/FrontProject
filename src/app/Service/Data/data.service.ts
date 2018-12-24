@@ -5,13 +5,46 @@ import { Injectable } from '@angular/core';
 })
 export class DataService {
 
-  private _storage:any;
+  private _Livreur: any = null;
+  private _commande: any = null;
+  private _Utilisateur: any = null;
   constructor() { }
 
-  getData(){
-    return this._storage;
+  /*****
+   * Livreur
+   */
+  getLivreur() {
+    return this._Livreur;
   }
-  setData(data){
-    this._storage=data;
+  setLivreur(data) {
+    this._Livreur = data;
+  }
+  /*****
+   * Commande
+   */
+  getCommande() {
+    return this._commande;
+  }
+  setCommande(data) {
+    this._commande = data;
+  }
+  /*****
+   * Utilisateur
+   */
+  getUser() {
+    return this._Utilisateur;
+  }
+  setUser(data) {
+    this._Utilisateur = data;
+  }
+
+
+  /***
+   * Clean All
+   */
+  clean() {
+    this._commande = null;
+    this._Livreur = null;
+    this._Utilisateur = null;
   }
 }
