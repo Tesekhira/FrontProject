@@ -21,6 +21,10 @@ router-outlet,mat-sidenav-content{
   margin-top:63px;
   pading-bottom: 80px;
 }
+
+.mat-menu-content {
+  overflow: hidden;
+}
 mat-sidenav{
   margin-top:54px;
 }
