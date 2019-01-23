@@ -33,6 +33,7 @@ import { ModalComponent } from './Component/modal/modal.component';
 import {ToastService} from './Service/Toast/toast.service';
 import { ToastrModule } from 'ng6-toastr-notifications';
 import { MatCardModule } from '@angular/material';
+import {SocketService} from './Service/Socket/socket.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,7 @@ import { MatCardModule } from '@angular/material';
   ],
   exports: [ ModalComponent ],
   entryComponents: [ModalComponent],
-  providers: [AuthentificationService, HttpService, DataService, ToastService],
+  providers: [AuthentificationService, HttpService, DataService, ToastService , SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -17,10 +17,10 @@ export class ToastService {
       };
     switch(type){
       case 'success':
-        this.toastr.successToastr(message, title,option);
+        this.toastr.successToastr(message, title, option);
         break;
       case 'error':
-        this.toastr.errorToastr(message, title,option);
+        this.toastr.errorToastr(message, title, option);
         break;
       case 'warning':
         this.toastr.warningToastr(message, title,option);

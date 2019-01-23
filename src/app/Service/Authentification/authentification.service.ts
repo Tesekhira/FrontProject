@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from '../Http/http.service';
+import {SocketService} from '../Socket/socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthentificationService {
   private _token = '';
   private _turePass = '';
   private _goTo  = '/';
-  constructor(private http: HttpService) {
+  constructor(private http: HttpService, private  socketService : SocketService) {
     this.init();
   }
 
@@ -44,6 +45,7 @@ export class AuthentificationService {
                           this._isLoggedIn = true;
                           this._turePass = model.password;
                           localStorage.setItem('truePass', this._turePass);
+                          this.socketService.connect();
                         } else {
                           this._isLoggedIn = false;
                           this._codeError = 500;
