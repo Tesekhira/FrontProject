@@ -4,7 +4,9 @@ import {DataService} from '../../Service/Data/data.service';
 import {AuthentificationService} from '../../Service/Authentification/authentification.service';
 import {HttpService} from '../../Service/Http/http.service';
 import {ToastService} from '../../Service/Toast/toast.service';
-
+import * as Stomp from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
+import {SocketService} from '../../Service/Socket/socket.service';
 @Component({
   selector: 'app-commande',
   templateUrl: './commande.component.html',
@@ -19,14 +21,19 @@ export class CommandeComponent implements OnInit {
   tmp: CommandeView = null;
   livreur: any = null;
   Commande = false;
+  variable = [];
+  private stompClient = null;
+
   constructor(private http: HttpService,
               private router: Router,
               private servicedata: DataService,
               private auth: AuthentificationService,
-              private toast: ToastService) { }
+              private toast: ToastService ,
+              private socketService: SocketService) { }
 
   ngOnInit() {
     if (this.auth.isLoggedIn()) {
+       //this.connect();
       this.utili = this.auth.getUser();
       this.model = {
         titre : '',
@@ -59,7 +66,19 @@ export class CommandeComponent implements OnInit {
   }
 
 
+  SocketTest() {
+    const url2 = 'http://localhost:8080/app/client/sock';
+    //this.socketService.send({'greeting': "Hi,abdlwahde!", 'name': "abdlwahde"});
+    this.http.getHttp(url2, 1 , null).then(
+        data => {
+                console.log(" service get  ---------------> " );
+                console.log( data );
+                this.socketService.send('/service/hello2', data);
+        } , err => {
 
+    }
+    );
+  }
   envoyer(): void {
     const url2 = 'http://localhost:8080/app/cmd/create';
     this.msgerr = '';
@@ -82,13 +101,17 @@ export class CommandeComponent implements OnInit {
 
            this.http.postHttp(url2, this.model, 2, this.utili).then(
              data => {
-               this.auth.LogIn({email : this.utili.email , password : this.auth.getPass()}).then(
+               console.log("################## insert commande ");
+               console.log(data);
+               this.socketService.send('/service/newCommande', data);
+               //this.sendCommande(data);
+               /*this.auth.LogIn({email : this.utili.email , password : this.auth.getPass()}).then(
                  res => {
                    this.servicedata.setCommande(null);
                    this.router.navigate(['/']);
                  }, err => {
                  }
-               );
+               );*/
              },
              error => {
                console.log('Error #### ', error);
@@ -130,8 +153,30 @@ export class CommandeComponent implements OnInit {
     this.servicedata.setLivreur(null);
   }
 
+  /***************** Socket *********************/
+  /*connect() {
+    const socket = new SockJS('http://localhost:8080/app/listner-socket');
+    this.stompClient = Stomp.over(socket);
 
-
+    const _this = this;
+    this.stompClient.connect({}, function (frame) {
+      _this.stompClient.subscribe('/app/cmd/socket/new', function (cmd) {
+        const cmdL = JSON.parse(cmd.body);
+        _this.addNewLc(cmdL);
+      });
+    });
+  }sendCommande(cmd) {
+    this.stompClient.send(
+      '/app/cmd/newCommande',
+      {},
+      JSON.stringify( cmd )
+    );
+  }
+  addNewLc(cmd) {
+    console.log("################ yes i m here ");
+    console.log(cmd);
+    this.variable[this.variable.length] = this.variable.length + 1;
+  }*/
 }
 export interface CommandeView {
   titre: string;
