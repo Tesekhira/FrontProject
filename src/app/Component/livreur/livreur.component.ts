@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, NavigationExtras} from '@angular/router';
 import {DataService} from '../../Service/Data/data.service';
-import {HttpService} from "../../Service/Http/http.service";
-import {AuthentificationService} from "../../Service/Authentification/authentification.service";
-import {ToastService} from "../../Service/Toast/toast.service";
+import {HttpService} from '../../Service/Http/http.service';
+import {AuthentificationService} from '../../Service/Authentification/authentification.service';
+import {ToastService} from '../../Service/Toast/toast.service';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class LivreurComponent implements OnInit {
   moin = [];
   plus = [];
   input = '';
-  constructor(public http: HttpService, private router: Router, private Send: DataService,private auth: AuthentificationService,private toast:ToastService) { }
+  constructor(public http: HttpService, private router: Router, private Send: DataService, private auth: AuthentificationService, private toast: ToastService) { }
 
   ngOnInit() {
     this.chargerLivreur();
@@ -31,23 +31,22 @@ export class LivreurComponent implements OnInit {
       // console.log(liv.etat_compte);
       this.Send.setLivreur(liv);
       this.router.navigate(['commande']);
-    }else if(liv.etat_compte === -1)
-    {
-      this.toast.CreateToast('warning','Livreur non disponible','Choisir un autre livreur');
+    } else if (liv.etat_compte === -1) {
+      this.toast.CreateToast('warning', 'Livreur non disponible', 'Choisir un autre livreur');
     }
   }
 
 
   chargerLivreur(): void {
     const url = 'http://localhost:8080/app/livreur/all';
-    this.http.getHttp(url,1,null).then(
-      data =>{
+    this.http.getHttp(url, 1, null).then(
+      data => {
         this.all = data;
         this.fixall =  data;
         this.livreurs = data;
         this.recomliv();
         this.trierLivreursparrecom();
-      },err =>{
+      }, err => {
         console.log('Error', err);
       }
     );

@@ -33,7 +33,6 @@ export class CommandeComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.isLoggedIn()) {
-       //this.connect();
       this.utili = this.auth.getUser();
       this.model = {
         titre : '',
@@ -66,19 +65,7 @@ export class CommandeComponent implements OnInit {
   }
 
 
-  SocketTest() {
-    const url2 = 'http://localhost:8080/app/client/sock';
-    //this.socketService.send({'greeting': "Hi,abdlwahde!", 'name': "abdlwahde"});
-    this.http.getHttp(url2, 1 , null).then(
-        data => {
-                console.log(" service get  ---------------> " );
-                console.log( data );
-                this.socketService.send('/service/hello2', data);
-        } , err => {
 
-    }
-    );
-  }
   envoyer(): void {
     const url2 = 'http://localhost:8080/app/cmd/create';
     this.msgerr = '';
@@ -98,25 +85,21 @@ export class CommandeComponent implements OnInit {
                val.sub_total =  val.quantite * val.prix_prod;
                this.model.total = this.model.total +  val.sub_total;
               });
+          if ( this.etat_compte() === true ) {
+            this.http.postHttp(url2, this.model, 2, this.utili).then(
+              data => {
+                this.socketService.send('/service/newCommande', data);
+              },
+              error => {
+                console.log('Error #### ', error);
+              }
+            );
+          } else {
+            this.toast.CreateToast('warning', 'Commande annuler', 'Merci de remplir les informations de votre profile');
+            this.servicedata.setCommande(this.model);
+            this.router.navigate(['/profile']);
+          }
 
-           this.http.postHttp(url2, this.model, 2, this.utili).then(
-             data => {
-               console.log("################## insert commande ");
-               console.log(data);
-               this.socketService.send('/service/newCommande', data);
-               //this.sendCommande(data);
-               /*this.auth.LogIn({email : this.utili.email , password : this.auth.getPass()}).then(
-                 res => {
-                   this.servicedata.setCommande(null);
-                   this.router.navigate(['/']);
-                 }, err => {
-                 }
-               );*/
-             },
-             error => {
-               console.log('Error #### ', error);
-             }
-           );
          } else {
            this.servicedata.setCommande(this.model);
            this.router.navigate(['/signin']);
@@ -153,30 +136,30 @@ export class CommandeComponent implements OnInit {
     this.servicedata.setLivreur(null);
   }
 
-  /***************** Socket *********************/
-  /*connect() {
-    const socket = new SockJS('http://localhost:8080/app/listner-socket');
-    this.stompClient = Stomp.over(socket);
+  etat_compte() {
+    let  etat;
+    let sum = 0 , div = 0;
+    if ( this.utili.type === 1) {
+      div = 3;
+    }
+    if (this.utili.nom !== '') {
+      sum += 1;
 
-    const _this = this;
-    this.stompClient.connect({}, function (frame) {
-      _this.stompClient.subscribe('/app/cmd/socket/new', function (cmd) {
-        const cmdL = JSON.parse(cmd.body);
-        _this.addNewLc(cmdL);
-      });
-    });
-  }sendCommande(cmd) {
-    this.stompClient.send(
-      '/app/cmd/newCommande',
-      {},
-      JSON.stringify( cmd )
-    );
+    }
+    if (this.utili.prenom !== '') {
+      sum += 1;
+
+    }
+    if ( this.utili.type === 1 && this.utili.adress !== '') {
+      sum += 1;
+
+    }
+
+    etat = sum / div ;
+    etat = etat.toFixed(2);
+
+    return etat === 1 ? true : false ;
   }
-  addNewLc(cmd) {
-    console.log("################ yes i m here ");
-    console.log(cmd);
-    this.variable[this.variable.length] = this.variable.length + 1;
-  }*/
 }
 export interface CommandeView {
   titre: string;

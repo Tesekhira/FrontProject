@@ -1,4 +1,4 @@
-<button mat-fab  class="CommandeFix " color="accent" routerLink="">
+<button mat-fab  class="CommandeFix " color="accent" routerLink="/commande">
   <mat-icon>add</mat-icon>
 </button>
 <div class="site-wrap">
@@ -40,59 +40,55 @@
     </div>
     <div class="row">
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="100">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/marjane.png'); ">
           <span class="d-block icon flaticon-calculator mb-3 text-primary"></span>
-          <h2>Marjane</h2>
-          <span class="counting">10,391</span>
+
+          <span class="counting">Marjane</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="200">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/ASWAK ASSALAM.png');" >
           <span class="d-block icon flaticon-wrench mb-3 text-primary"></span>
-          <h2>Aswak salam</h2>
-          <span class="counting">192</span>
+
+          <span class="counting">Aswak Assalam</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="300">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/Bim.png');">
           <span class="d-block icon flaticon-worker mb-3 text-primary"></span>
-          <h2>Bim</h2>
-          <span class="counting">1,021</span>
+
+          <span class="counting">Bim</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="400">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/atacadao.png');">
           <span class="d-block icon flaticon-telecommunications mb-3 text-primary"></span>
-          <h2>Atacadao</h2>
-          <span class="counting">1,219</span>
+
+          <span class="counting">Atacadao</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="500">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/acima.png');">
           <span class="d-block icon flaticon-stethoscope mb-3 text-primary"></span>
-          <h2>Acima</h2>
-          <span class="counting">482</span>
+          <span class="counting">Acima</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="600">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/carrefour.png');">
           <span class="d-block icon flaticon-computer-graphic mb-3 text-primary"></span>
-          <h2>Carrefour</h2>
-          <span class="counting">5,409</span>
+          <span class="counting">Carrefour</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="700">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/electro.png');">
           <span class="d-block icon flaticon-trolley mb-3 text-primary"></span>
-          <h2>Electro planets</h2>
-          <span class="counting">291</span>
+          <span class="counting">Electroplanet</span>
         </a>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-3 mb-3" data-aos="fade-up" data-aos-delay="800">
-        <a href="#" class="h-100 feature-item">
+        <a href="#" class="h-100 feature-item" style="background-image:url('../../../assets/img/magasin/decatlon.png');">
           <span class="d-block icon flaticon-restaurant mb-3 text-primary"></span>
-          <h2>Decathlon</h2>
-          <span class="counting">329</span>
+          <span class="counting">Decathlon</span>
         </a>
       </div>
     </div>
@@ -127,119 +123,42 @@
       <div class="row">
         <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
           <h2 class="mb-5 h3">Meilleur Livreur</h2>
-          <div class="rounded border jobs-wrap">
-
-            <a href="job-single.html" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
-              <div class="company-logo blank-logo text-center text-md-left pl-3">
-                <img src="../../assets/img/user-profile.png" alt="Image" class="img-fluid mx-auto">
-              </div>
-              <div class="job-details h-100">
-                <div class="p-3 align-self-center">
-                  <h3>Restaurant Crew</h3>
-                  <div class="d-block d-lg-flex">
-                    <div class="mr-3"><span class="icon-suitcase mr-1"></span> Resto Bar</div>
-                    <div class="mr-3"><span class="icon-room mr-1"></span> Florida</div>
-                    <div><span class="icon-money mr-1"></span> $55000 &mdash; 70000</div>
+          <div class="rounded border jobs-wrap" >
+            <div *ngFor="let liv of livreurs; index as i" >
+              <a  *ngIf="i < 3" (click)="onSelect(liv)" class="job-item d-block d-md-flex align-items-center  border-bottom fulltime" id="myUL">
+                <div class="company-logo blank-logo text-center text-md-left pl-3">
+                  <img src="../../assets/img/livreur/denne.jpg" alt="Image" class="rounded-circle">
+                </div>
+                <div class="job-details h-100">
+                  <div class="p-3 align-self-center" id="myli">
+                    <h3>{{liv.email}}</h3>
+                    <h5 id="a">{{liv.nom + " " +liv.prenom+'  Livreur#'+liv.id}}</h5>
+                    <div class="d-block d-lg-flex">
+                      <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{liv.nom + " " + liv.prenom}}  est à votre disposition</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="job-category align-self-center">
-                <div class="p-3">
-                  <span class="text-info p-2 rounded border border-info">Full Time</span>
-                </div>
-              </div>
-            </a>
 
-            <a href="job-single.html" class="job-item d-block d-md-flex align-items-center freelance">
-              <div class="company-logo blank-logo text-center text-md-left pl-3">
-                <img src="images/logo_1.png" alt="Image" class="img-fluid mx-auto">
-              </div>
-              <div class="job-details h-100">
-                <div class="p-3 align-self-center">
-                  <h3>JavaScript Fullstack Developer</h3>
-                  <div class="d-block d-lg-flex">
-                    <div class="mr-3"><span class="icon-suitcase mr-1"></span> Cooper</div>
-                    <div class="mr-3"><span class="icon-room mr-1"></span> Anywhere</div>
-                    <div><span class="icon-money mr-1"></span> $55000 &mdash; 70000</div>
+                <div class="job-category align-self-center">
+                  <div class="p-3">
+                    <div class="one">
+                      <span style="margin-right: 5px;">{{plus[i]}}</span>
+                      <i class="material-icons" id="first">thumb_up</i>
+                    </div>
+                    <div class="two">
+                      <span style="margin-right: 5px;">{{moin[i]}}</span>
+                      <i class="material-icons" id="second">thumb_down</i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="job-category align-self-center">
-                <div class="p-3">
-                  <span class="text-warning p-2 rounded border border-warning">Freelance</span>
-                </div>
-              </div>
-            </a>
-
-
-            <a href="job-single.html" class="job-item d-block d-md-flex align-items-center freelance">
-              <div class="company-logo blank-logo text-center text-md-left pl-3">
-                <img src="images/logo_1.png" alt="Image" class="img-fluid mx-auto">
-              </div>
-              <div class="job-details h-100">
-                <div class="p-3 align-self-center">
-                  <h3>ReactJS Fullstack Developer</h3>
-                  <div class="d-block d-lg-flex">
-                    <div class="mr-3"><span class="icon-suitcase mr-1"></span> Cooper</div>
-                    <div class="mr-3"><span class="icon-room mr-1"></span> Anywhere</div>
-                    <div><span class="icon-money mr-1"></span> $55000 &mdash; 70000</div>
-                  </div>
-                </div>
-              </div>
-              <div class="job-category align-self-center">
-                <div class="p-3">
-                  <span class="text-warning p-2 rounded border border-warning">Freelance</span>
-                </div>
-              </div>
-            </a>
-
-
-            <a href="job-single.html" class="job-item d-block d-md-flex align-items-center fulltime">
-              <div class="company-logo blank-logo text-center text-md-left pl-3">
-                <img src="images/company_logo_blank.png" alt="Image" class="img-fluid mx-auto">
-              </div>
-              <div class="job-details h-100">
-                <div class="p-3 align-self-center">
-                  <h3>Assistant Brooker, Real Estate</h3>
-                  <div class="d-block d-lg-flex">
-                    <div class="mr-3"><span class="icon-suitcase mr-1"></span> RealState</div>
-                    <div class="mr-3"><span class="icon-room mr-1"></span> New York</div>
-                    <div><span class="icon-money mr-1"></span> $55000 &mdash; 70000</div>
-                  </div>
-                </div>
-              </div>
-              <div class="job-category align-self-center">
-                <div class="p-3">
-                  <span class="text-info p-2 rounded border border-info">Full Time</span>
-                </div>
-              </div>
-            </a>
-
-            <a href="job-single.html" class="job-item d-block d-md-flex align-items-center partime">
-              <div class="company-logo blank-logo text-center text-md-left pl-3">
-                <img src="images/logo_2.png" alt="Image" class="img-fluid mx-auto">
-              </div>
-              <div class="job-details h-100">
-                <div class="p-3 align-self-center">
-                  <h3>Telecommunication Manager</h3>
-                  <div class="d-block d-lg-flex">
-                    <div class="mr-3"><span class="icon-suitcase mr-1"></span> Think</div>
-                    <div class="mr-3"><span class="icon-room mr-1"></span> London</div>
-                  </div>
-                </div>
-              </div>
-              <div class="job-category align-self-center">
-                <div class="p-3">
-                  <span class="text-danger p-2 rounded border border-danger">Par Time</span>
-                </div>
-              </div>
-            </a>
+              </a>
+            </div>
 
 
           </div>
 
           <div class="col-md-12 text-center mt-5">
-            <button mat-raised-button  color="accent" routerLink="">
+            <button mat-raised-button  color="accent" routerLink="/livreur">
               <mat-icon>add</mat-icon>
               Afficher plus de livreur
             </button>
