@@ -34,17 +34,37 @@
       <br>
       <ul class="list-group">
         <li class="list-group-item text-muted">Activité</li>
-        <li class="list-group-item text-right" *ngIf="TypeCompte==1 && model.commandes != null"><span class="pull-left"><strong>Commande</strong></span> {{model.commandes.length}}</li>
-        <li class="list-group-item text-right" *ngIf="TypeCompte==1 && model.recommander != null "><span class="pull-left"><strong>Recommandation</strong></span> {{model.recommander.length}}</li>
-        <li class="list-group-item text-right" *ngIf="TypeCompte==2 && model.recommandation != null "><span class="pull-left"><strong>Recommandation</strong></span> {{model.recommandation.length}}</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Etat du profil</strong></span> 37</li>
+        <li class="list-group-item text-right" *ngIf="TypeCompte==1 && model.commandes != null">
+          <span class="pull-left"><strong>Commande</strong></span>
+          {{model.commandes.length}}
+        </li>
+        <li class="list-group-item text-right" *ngIf="TypeCompte==1 && model.recommander != null ">
+          <span class="pull-left"><strong>Recommandation</strong></span>
+          <br>
+          <i class="material-icons" id="first">thumb_up</i>  {{plus}}
+          <i class="material-icons" id="second">thumb_down</i> {{moin}}
+        </li>
+        <li class="list-group-item text-right" *ngIf="TypeCompte==2 && model.recommandation != null ">
+          <span class="pull-left"><strong>Recommandation</strong></span>
+          <br>
+          <i class="material-icons" id="first">thumb_up</i>  {{plus}}
+          <i class="material-icons" id="second">thumb_down</i> {{moin}}
+        </li>
+        <li class="list-group-item text-right">
+          <span class="pull-left"><strong>Nombre de signale</strong></span>
+          {{sign}}
+        </li>
+        <li class="list-group-item text-right">
+          <span class="pull-left"><strong>Etat du profil</strong></span>
+          {{etat_compte()}}
+        </li>
       </ul>
       <br>
       <br>
       <ul class="list-group" *ngIf=" TypeCompte == 1 && (model.commandes.length==0 || model.recommander.length === 0)">
         <li class="list-group-item text-muted">Bienvenue</li>
         <li class="list-group-item text-center" *ngIf="model.commandes.length === 0" >
-          <button mat-raised-button style="position: center" color="primary" routerLink="" >Passer commande</button>
+          <button mat-raised-button style="position: center" color="primary" routerLink="/commande" >Passer commande</button>
         </li>
         <li class="list-group-item text-center" *ngIf="model.recommander.length === 0">
           <button mat-raised-button style="position: center" color="primary" routerLink="">Recommander un livreur</button>
@@ -137,25 +157,31 @@
 
           </div>
         </mat-tab>
-        <mat-tab *ngSwitchCase=1 label="Recommendation">
+        <mat-tab *ngSwitchCase=1 label="Recommandation">
+          <button  (click)="ShowFormRecommandation() " style="float: right; margin : 10px;" class="btn btn-success" >
+            <i class="fa fa-plus"></i>
+            Recommander livreur
+          </button>
+          <div *ngIf="DisplayRecommande === true" style="margin-top: 100px;margin-left:10px;margin-bottom: 5px;">
+            Liste des clients :
+            <mat-form-field>
+              <mat-select placeholder="Selectionner un livreur" [(ngModel)]="selectedLiv" name="livreur">
+                <mat-option disabled> -- </mat-option>
+                <mat-option *ngFor="let liv of listeRecommande; let i = index" [value]="liv!.id">
+                  {{ i+1 + " - " + liv!.nom + " " + liv!.prenom}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button (click)="AddRecommander(liv,selectedLiv)" style="float: right; margin : 10px;" class="btn btn-success" >
+              Ajouter
+            </button>
+          </div>
           <div class="site-section bg-light">
             <div class="container">
               <div class="row">
-                <span *ngIf="model.recommander !== null && model.recommander.length !== 0" class="text-center"> Recommandation </span>
                 <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                <span *ngIf="model.recommander !== null && model.recommander.length !== 0" class="text-center"> Recommandation </span>
                   <div class="rounded border jobs-wrap">
-                    <a *ngIf="model.recommander !== null && model.recommander.length  ===  0 && DisplayRecommande === false " class="job-item d-block d-md-flex align-items-center  border-bottom fulltime">
-                      <div class="job-details h-100">
-                        <div class="p-3 align-self-center">
-                          <h3>Aucune recommandation des livreurs effectuer</h3>
-                        </div>
-                      </div>
-                      <div class="job-category align-self-center">
-                        <div class="p-3">
-                          <span (click)="DisplayRecommande === true ? DisplayRecommande = false : DisplayRecommande = true" class="text-info p-2 rounded border border-info">Recommander</span>
-                        </div>
-                      </div>
-                    </a>
                     <a *ngFor="let rec of model.recommander" class="job-item d-block d-md-flex align-items-center  border-bottom {{rec.classe}}">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
@@ -200,16 +226,13 @@
 
           </div>
         </mat-tab>
-
         <mat-tab *ngSwitchCase=2 label="Signaler Client">
-          <!--span *ngIf="model.signales !== null && model.signales.length !== 0" class="text-center"> Clients signaler : </span-->
-          <button  (click)="DisplayFormSignale  === true ? DisplayFormSignale = false : DisplayFormSignale = true " style="float: right; margin : 10px;" class="btn btn-success" >
+          <button  (click)="ShowFormSignal() " style="float: right; margin : 10px;" class="btn btn-success" >
             <i class="fa fa-ban"></i>
             Signaler client
           </button>
           <div *ngIf="DisplayFormSignale === true" style="margin-top: 100px;margin-left:10px;margin-bottom: 5px;">
-            formulaire :
-
+            Liste des clients :
             <mat-form-field>
               <mat-select placeholder="Selectionner un client" [(ngModel)]="selectedValue" name="client">
                 <mat-option disabled> -- </mat-option>
@@ -218,7 +241,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button (click)="AddSignaler(cli,selectedValue)" style="float: right; margin : 10px;" class="btn btn-success" >
+            <button (click)="AddSignaler(selectedValue)" style="float: right; margin : 10px;" class="btn btn-success" >
               Signaler
             </button>
           </div>
