@@ -34,9 +34,9 @@
       <br>
       <ul class="list-group">
         <li class="list-group-item text-muted">Activité</li>
-        <li class="list-group-item text-right" *ngIf="TypeCompte==1 && model.commandes != null">
+        <li class="list-group-item text-right" *ngIf="TypeCompte==1 && servicedata.getCommandes() != null">
           <span class="pull-left"><strong>Commande</strong></span>
-          {{model.commandes.length}}
+          {{servicedata.getCommandes().length}}
         </li>
         <li class="list-group-item text-right" *ngIf="TypeCompte==1 && model.recommander != null ">
           <span class="pull-left"><strong>Recommandation</strong></span>
@@ -61,9 +61,9 @@
       </ul>
       <br>
       <br>
-      <ul class="list-group" *ngIf=" TypeCompte == 1 && (model.commandes.length==0 || model.recommander.length === 0)">
+      <ul class="list-group" *ngIf=" TypeCompte == 1 && (servicedata.getCommandes().length==0 || model.recommander.length === 0)">
         <li class="list-group-item text-muted">Bienvenue</li>
-        <li class="list-group-item text-center" *ngIf="model.commandes.length === 0" >
+        <li class="list-group-item text-center" *ngIf="servicedata.getCommandes().length === 0" >
           <button mat-raised-button style="position: center" color="primary" routerLink="/commande" >Passer commande</button>
         </li>
         <li class="list-group-item text-center" *ngIf="model.recommander.length === 0">
@@ -108,13 +108,13 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="Commande">
+        <mat-tab label="Commande" id="cmd">
           <div class="site-section bg-light">
             <div class="container">
               <div class="row">
                 <div class="col-md-12 mb-5 mb-md-0" data-aos="fade-up" data-aos-delay="100">
                   <div class="rounded border jobs-wrap">
-                    <a *ngIf="model.type===1 && model.commandes.length  ===  0" class="job-item d-block d-md-flex align-items-center  border-bottom freelance">
+                    <a *ngIf="model.type===1 && servicedata.getCommandes().length  ===  0" class="job-item d-block d-md-flex align-items-center  border-bottom freelance">
                       <div class="job-details h-100">
                         <div class="p-3 align-self-center">
                           <h3>Aucune commande effectuer</h3>
@@ -126,7 +126,7 @@
                         </div>
                       </div>
                     </a>
-                    <a *ngFor="let cmd of model.commandes" class="job-item d-block d-md-flex align-items-center  border-bottom {{cmd.classe}}" >
+                    <a *ngFor="let cmd of servicedata.getCommandes()" class="job-item d-block d-md-flex align-items-center  border-bottom {{cmd.classe}}" >
                       <div class="job-details h-100 ">
                         <div class="p-3 align-self-center">
                           <h3>{{cmd.titre}}</h3>
@@ -143,10 +143,11 @@
                       <span *ngIf="cmd.type_cmd === 0" class="text-info p-2 ">Normal</span>
                       <div class="job-category align-self-center">
                         <div class="p-3">
-                          <span *ngIf="cmd.etat_cmd === 0" class="text-danger p-2 rounded border border-danger">Envoyer</span>
-                          <span *ngIf="cmd.etat_cmd === 1" class="text-warning p-2 rounded border border-warning">Accepter</span>
-                          <span *ngIf="cmd.etat_cmd === 2" class="text-info p-2 rounded border border-info">En cours</span>
-                          <span *ngIf="cmd.etat_cmd === 3" class="text-success p-2 rounded border border-success">Livrer</span>
+                          <span *ngIf="cmd.etat_cmd === 0" class="text-danger p-2 rounded border border-danger" (click)="changeStateCmd(cmd)">Envoyer</span>
+                          <span *ngIf="cmd.etat_cmd === 1" class="text-warning p-2 rounded border border-warning" (click)="changeStateCmd(cmd)">Accepter</span>
+                          <span *ngIf="cmd.etat_cmd === 2" class="text-info p-2 rounded border border-info" (click)="changeStateCmd(cmd)">En cours</span>
+                          <span *ngIf="cmd.etat_cmd === 3" class="text-success p-2 rounded border border-success" >Livrer</span>
+                          <span *ngIf="cmd.etat_cmd === 4" class="text-dark p-2 rounded border border-dark" (click)="changeStateCmd(cmd)">Annuler</span>
                         </div>
                       </div>
                     </a>

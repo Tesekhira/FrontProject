@@ -5,6 +5,11 @@ import {HttpService} from '../../Service/Http/http.service';
 import {ToastService} from '../../Service/Toast/toast.service';
 import {MatDialog} from '@angular/material';
 import {ModalComponent} from '../modal/modal.component';
+import {SocketService} from '../../Service/Socket/socket.service';
+import {__await} from 'tslib';
+import {DataService} from '../../Service/Data/data.service';
+import {AcceptComponent} from '../accept/accept.component';
+import {ConfirmationComponent} from '../confirmation/confirmation.component';
 
 @Component({
   selector: 'app-profile',
@@ -74,7 +79,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(public auth: AuthentificationService, public http: HttpService,
               private router: Router, public dialog: MatDialog,
-              private toast: ToastService) {
+              private toast: ToastService, private socketservice: SocketService, private servicedata: DataService) {
     if (this.auth.isLoggedIn()) {
       this.utili = this.auth.getUser();
       this.TypeCompte = this.utili.type;
@@ -95,6 +100,7 @@ export class ProfileComponent implements OnInit {
     if (this.auth.isLoggedIn()) {
       this.utili = this.auth.getUser();
     }
+
       if (this.utili !== null) {
         if (this.utili.id) {
           this.formEdit.id = this.model.id = this.utili.id;
@@ -376,6 +382,7 @@ export class ProfileComponent implements OnInit {
     this.emailError = 0;
     this.password = '';
   }
+
   SauvgarderEditForm(): void {
 
     const url = 'http://localhost:8080/app/client/update';
@@ -389,12 +396,22 @@ export class ProfileComponent implements OnInit {
                 this.http.patchHttp(url, this.formEdit, 2, this.utili).then(
                   res => {
                     if (res !== null) {
-                      const token = this.utili.token;
+                      /*const token = this.utili.token;
                       this.utili = res;
                       this.utili.token = token;
-                      this.auth.setUser(this.utili);
-                      this.init();
-                      this.toast.CreateToast('success', 'Modification effectuée', 'Votre modification est enregistrer');
+                      this.auth.setUser(this.utili);*/
+                      this.socketservice.send('/service/updateCli', res);
+                      (async () => {
+                        // Do something before delay
+                        console.log('before delay')
+
+                        await this.socketservice.delay(200);
+
+                        // Do something after
+                        console.log('after delay')
+                        this.init();
+                        this.toast.CreateToast('success', 'Modification effectuée', 'Votre modification est enregistrer');
+                      })();
                     } else {
                       this.emailError = 2;
                     }
@@ -421,12 +438,22 @@ export class ProfileComponent implements OnInit {
             this.http.patchHttp(url2, this.formEdit, 2, this.utili).then(
               res => {
                 if (res !== null) {
-                  const token = this.utili.token;
+                 /* const token = this.utili.token;
                   this.utili = res;
                   this.utili.token = token;
-                  this.auth.setUser(this.utili);
-                  this.init();
-                  this.toast.CreateToast('success', 'Modification effectuée', 'Votre modification est enregistrer');
+                  this.auth.setUser(this.utili);*/
+                  this.socketservice.send('/service/updateLiv', res);
+                  (async () => {
+                    // Do something before delay
+                    console.log('before delay')
+
+                    await this.socketservice.delay(200);
+
+                    // Do something after
+                    console.log('after delay')
+                    this.init();
+                    this.toast.CreateToast('success', 'Modification effectuée', 'Votre modification est enregistrer');
+                  })();
                 } else {
                   this.emailError = 2;
                 }
@@ -657,18 +684,68 @@ export class ProfileComponent implements OnInit {
   AddRecommander(liv, id_liv) {
     const url = 'http://localhost:8080/app/recommander/create';
     const url2 = 'http://localhost:8080/app/livreur/' + this.utili.id;
-    this.DisplayRecommande  === true ? this.DisplayRecommande = false : this.DisplayRecommande = true;
+    console.log(id_liv);
+    if ( id_liv !== undefined) {
+      this.DisplayRecommande  === true ? this.DisplayRecommande = false : this.DisplayRecommande = true;
 
-    this.http.postHttp(url, {client_id : this.utili.id , livreur_id : id_liv , etat : 0}, 2, this.utili).then(
-      res => {
-        const val: any  = res;
-        this.listeRecommande.splice(this.listeRecommande.indexOf(liv), 1);
-        this.ChargerLivreurNewRecommander(val);
-      }, error => {
+      this.http.postHttp(url, {client_id : this.utili.id , livreur_id : id_liv , etat : 0}, 2, this.utili).then(
+        res => {
+          const val: any  = res;
+          this.listeRecommande.splice(this.listeRecommande.indexOf(liv), 1);
+          this.ChargerLivreurNewRecommander(val);
+        }, error => {
 
-        console.log(error);
-      }
-    );
+          console.log(error);
+        }
+      );
+    } else {
+      this.toast.CreateToast('warning', 'Recommandation', 'la liste des Livreur est vide');
+    }
+  }
+
+  openDialogAcc(cmd) {
+    const dialogRef = this.dialog.open(AcceptComponent, {
+      width: '680px',
+      data: cmd
+    });
+    this.utili = this.auth.getUser();
+    const prom = dialogRef.afterClosed().toPromise();
+    prom.then(() => {
+      this.servicedata.setNotif( this.auth.getNbNotification());
+    });
+  }
+  openDialogComm(cmd) {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '680px',
+      data: cmd
+    });
+    this.utili = this.auth.getUser();
+    const prom = dialogRef.afterClosed().toPromise();
+    prom.then(() => {
+      this.servicedata.setNotif( this.auth.getNbNotification());
+    });
+  }
+  changeStateCmd(cmd) {
+    switch (cmd.etat_cmd) {
+      case 0: if (this.auth.getTypeCompte() === 2) {
+                this.openDialogAcc(cmd);
+              }
+              break;
+      case 1: if (this.auth.getTypeCompte() === 2) {
+                this.openDialogComm(cmd);
+              }
+        break;
+      case 2: if (this.auth.getTypeCompte() === 1) {
+                this.openDialogComm(cmd);
+              }
+              break;
+      case 4: if (this.auth.getTypeCompte() === 1) {
+                console.log('qsdfghjklm======================qsdfghjklm');
+                this.servicedata.setCommande(cmd);
+                this.router.navigate(['/livreur']);
+              }
+              break;
+    }
   }
 
 }

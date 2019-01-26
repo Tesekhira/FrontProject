@@ -1,8 +1,8 @@
 import { Component, OnInit  } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import {Router} from "@angular/router";
-import {AuthentificationService} from "../../Service/Authentification/authentification.service";
+import {Router} from '@angular/router';
+import {AuthentificationService} from '../../Service/Authentification/authentification.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,41 +10,42 @@ import {AuthentificationService} from "../../Service/Authentification/authentifi
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  model:UtilisateurView={
-    email:'',
-    password:'',
-    repasse:'',
-    typeCompte:false
+  model: UtilisateurView = {
+    email: '',
+    password: '',
+    repasse: '',
+    typeCompte: false
   };
-  pass2Error:boolean=false;
-  emailIncorrect:Number=0;
-  constructor(public auth:AuthentificationService,private router: Router) { }
+  pass2Error = false;
+  emailIncorrect: Number = 0;
+  constructor(public auth: AuthentificationService, private router: Router) { }
 
   ngOnInit() {
   }
 
-  Inscrire():void{
-    if(this.auth.validateEmail(this.model.email)==false){
-      this.emailIncorrect=2;
-    } else if(this.model.password == this.model.repasse) {
-      this.emailIncorrect=0;
-     this.auth.Inscrire(this.model).then(()=>{
-       this.pass2Error=false;
-       if(this.auth.isLoggedIn()===false && this.auth.getCode()!=500)
+  Inscrire(): void {
+    if (this.auth.validateEmail(this.model.email) === false) {
+      this.emailIncorrect = 2;
+    } else if (this.model.password === this.model.repasse) {
+      this.emailIncorrect = 0;
+     this.auth.Inscrire(this.model).then(() => {
+       this.pass2Error = false;
+       if (this.auth.isLoggedIn() === false && this.auth.getCode() !== 500) {
          this.router.navigate(['/signin']);
+       }
      });
-    }else{
-      this.emailIncorrect=0;
-      this.pass2Error=true;
+    } else {
+      this.emailIncorrect = 0;
+      this.pass2Error = true;
     }
 
   }
 
 }
 
-export interface UtilisateurView{
-  email:string;
-  password:string;
-  repasse:string;
-  typeCompte:boolean;
+export interface UtilisateurView {
+  email: string;
+  password: string;
+  repasse: string;
+  typeCompte: boolean;
 }
