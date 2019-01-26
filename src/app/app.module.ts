@@ -34,6 +34,8 @@ import {ToastService} from './Service/Toast/toast.service';
 import { ToastrModule } from 'ng6-toastr-notifications';
 import { MatCardModule } from '@angular/material';
 import {SocketService} from './Service/Socket/socket.service';
+import { AcceptComponent } from './Component/accept/accept.component';
+import { ConfirmationComponent } from './Component/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import {SocketService} from './Service/Socket/socket.service';
     ProfileComponent,
     CommandeComponent,
     LivreurComponent,
-    ModalComponent
+    ModalComponent,
+    AcceptComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -75,8 +79,8 @@ import {SocketService} from './Service/Socket/socket.service';
     MatBadgeModule,
     MatCardModule
   ],
-  exports: [ ModalComponent ],
-  entryComponents: [ModalComponent],
+  exports: [ ModalComponent, AcceptComponent, ConfirmationComponent ],
+  entryComponents: [ModalComponent, AcceptComponent, ConfirmationComponent],
   providers: [AuthentificationService, HttpService, DataService, ToastService , SocketService],
   bootstrap: [AppComponent]
 })

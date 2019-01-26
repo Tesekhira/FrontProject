@@ -4,7 +4,7 @@
     <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
       <mat-icon>menu</mat-icon>
     </button>
-    <span><img src="../assets/img/logo/logo_mini.png"></span>
+    <span><img src="../assets/img/logo/logo_mini.png" ></span>
     <span style="margin-top: 5px;">Tesekhira</span>
     <span class="example-spacer"></span>
     <div fxShow="true" fxHide.lt-md >
@@ -14,41 +14,43 @@
       <button mat-button *ngIf="!auth.isLoggedIn() || ( auth.isLoggedIn() && auth.getTypeCompte() === 1 )" class="menuC" routerLink="/livreur">Livreur</button>
       <button mat-raised-button  *ngIf="!auth.isLoggedIn()" class="menuC" color="accent" routerLink="/signin">Sign in</button>
       <button mat-raised-button *ngIf="!auth.isLoggedIn()"  class="menuC" color="accent" routerLink="/signup">Sign up</button>
-      <button mat-icon-button *ngIf="auth.isLoggedIn() && auth.getTypeCompte() === 2" [matMenuTriggerFor]="state">
-        <mat-icon *ngIf="auth.getUser().etat_compte == 1" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text" >notifications</mat-icon>
-        <mat-icon *ngIf="auth.getUser().etat_compte == 0" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text orange" >notifications</mat-icon>
-        <mat-icon *ngIf="auth.getUser().etat_compte == -1" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text red" >notifications</mat-icon>
-      </button>
+
     </div>
+    <button mat-icon-button *ngIf="auth.isLoggedIn() && auth.getTypeCompte() === 2" [matMenuTriggerFor]="state">
+      <mat-icon *ngIf="auth.getUser().etat_compte == 1" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text" >notifications</mat-icon>
+      <mat-icon *ngIf="auth.getUser().etat_compte == 0" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text orange" >notifications</mat-icon>
+      <mat-icon *ngIf="auth.getUser().etat_compte == -1" matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text red" >notifications</mat-icon>
+    </button>
     <button mat-icon-button *ngIf="auth.isLoggedIn() && auth.getTypeCompte() === 2" [matMenuTriggerFor]="notification">
       <mat-icon matBadge = {{auth.getNbNotification().length}} matBadgeColor="accent" >shopping_cart</mat-icon>
     </button>
     <mat-menu #notification="matMenu">
-      <button *ngFor="let l of auth.getNbNotification()" mat-menu-item>
+      <button *ngFor="let l of servicedata.getNotif()" mat-menu-item (click)="openDialog(l)">
         <mat-icon >add_shopping_cart</mat-icon>
-        <span>
-          {{l.titre}}
-        </span>
+        <span>{{l.titre}}</span>
         <span *ngIf="l.type_cmd === 0" class="text-info p-2 ">Normal</span>
         <span *ngIf="l.type_cmd === 1" class="text-success p-2 ">Expresse</span>
+      </button>
+      <button  mat-menu-item >
+        <span>Toutes les commandes</span>
       </button>
     </mat-menu>
 
 
     <mat-menu #state="matMenu">
-      <button  mat-menu-item>
+      <button  mat-menu-item (click)="changeState(1)">
         <mat-icon  matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text">person</mat-icon>
         <span>
           Disponible
         </span>
       </button>
-      <button  mat-menu-item>
+      <button  mat-menu-item (click)="changeState(0)">
         <mat-icon matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text orange">person</mat-icon>
         <span>
           Occupé
         </span>
       </button>
-      <button  mat-menu-item>
+      <button  mat-menu-item (click)="changeState(-1)">
         <mat-icon matBadge ="0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="below after" class="hide-text red">person</mat-icon>
         <span>
           Hors-ligne
@@ -57,14 +59,14 @@
     </mat-menu>
 
 
-      <div style="overflow-x: hidden;margin-right: 5px;" *ngIf="auth.isLoggedIn()"  class="company-logo blank-logo text-center text-md-left pl-3" [matMenuTriggerFor]="Setting"  >
-        <img src="../../assets/img/user-profile.png" alt="Image" style="height: 45px; width: 45px;">
-      </div>
+    <div style="overflow-x: hidden;margin-right: 5px;" *ngIf="auth.isLoggedIn()"  class="company-logo blank-logo text-center text-md-left pl-3" [matMenuTriggerFor]="Setting"  >
+      <img src="../../assets/img/user-profile.png" alt="Image" style="height: 45px; width: 45px;">
+    </div>
 
-       <mat-menu #Setting="matMenu" style="overflow-x: hidden; overflow-y: hidden; margin-top: 10px;">
-         <button mat-menu-item routerLink="/profile">Profile</button>
-         <button mat-menu-item (click)="LogOut()">Déconnecter</button>
-       </mat-menu>
+    <mat-menu #Setting="matMenu" style="overflow-x: hidden; overflow-y: hidden; margin-top: 10px;">
+      <button mat-menu-item routerLink="/profile">Profile</button>
+      <button mat-menu-item (click)="LogOut()">Déconnecter</button>
+    </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -72,8 +74,8 @@
   <mat-sidenav #sidenav>
     <mat-nav-list>
       <a routerLink="" mat-list-item>Accueil</a>
-      <a routerLink="/commande" mat-list-item>Commander</a>
-      <a routerLink="/livreur" mat-list-item>Livreur</a>
+      <a *ngIf="!auth.isLoggedIn() || ( auth.isLoggedIn() && auth.getTypeCompte() === 1 )" routerLink="/commande" mat-list-item>Commander</a>
+      <a *ngIf="!auth.isLoggedIn() || ( auth.isLoggedIn() && auth.getTypeCompte() === 1 )" routerLink="/livreur" mat-list-item>Livreur</a>
       <a *ngIf="!auth.isLoggedIn()"  routerLink="/signin" mat-list-item>Sign in</a>
       <a *ngIf="!auth.isLoggedIn()"  routerLink="/signup" mat-list-item>Sign up</a>
     </mat-nav-list>

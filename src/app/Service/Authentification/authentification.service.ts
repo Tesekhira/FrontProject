@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from '../Http/http.service';
 import {SocketService} from '../Socket/socket.service';
+import {DataService} from '../Data/data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,20 @@ export class AuthentificationService {
   private _token = '';
   private _turePass = '';
   private _goTo  = '/';
-  constructor(private http: HttpService, private  socketService : SocketService) {
+  constructor(private http: HttpService, private  socketService: SocketService, private servicedata: DataService) {
     this.init();
   }
-
+  /***
+   * Charger All
+   */
+  chargerTous() {
+    if (this.isLoggedIn()) {
+      this.servicedata.setUser(this.getUser());
+      this.servicedata.setCommandes(this.getUser().commandes);
+      this.servicedata.setNotif(this.getNbNotification());
+      this.socketService.connect();
+    }
+  }
   init() {
     return localStorage.getItem('utilisateur') === null ? this._isLoggedIn = false : this._isLoggedIn = true;
   }
@@ -70,6 +81,7 @@ export class AuthentificationService {
         return this.http.postHttp(url, model, 1, null).then(
         res => {
           this._isLoggedIn = false;
+          this._codeError = 0;
         },
         err => {
               this._isLoggedIn = false;
@@ -80,6 +92,7 @@ export class AuthentificationService {
       return this.http.postHttp(url2, model, 1, null).then(
         res => {
           this._isLoggedIn = false;
+          this._codeError = 0;
         },
         err => {
           this._isLoggedIn = false;
@@ -128,4 +141,39 @@ export class AuthentificationService {
     }
 
   }
+
+  getCmdAccept() {
+    const user = this.getUser();
+    const tab: Array<any> = [] ;
+    if (user !== null && user.commandes !== null && user.commandes.length !== 0 ) {
+      const cmds = user.commandes;
+      for (const ind in cmds) {
+        if (cmds[ind].etat_cmd === 1 || cmds[ind].etat_cmd === 2 ) {
+          tab[tab.length] = cmds[ind];
+        }
+      }
+      return tab;
+    } else {
+      return tab;
+    }
+
+  }
+  getCmdEnCours() {
+    const user = this.getUser();
+    const tab: Array<any> = [] ;
+    if (user !== null && user.commandes !== null && user.commandes.length !== 0 ) {
+      const cmds = user.commandes;
+      for (const ind in cmds) {
+        if (cmds[ind].etat_cmd === 2 ) {
+          tab[tab.length] = cmds[ind];
+        }
+      }
+      return tab;
+    } else {
+      return tab;
+    }
+
+  }
+
+
 }

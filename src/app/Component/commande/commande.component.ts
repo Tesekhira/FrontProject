@@ -22,7 +22,6 @@ export class CommandeComponent implements OnInit {
   livreur: any = null;
   Commande = false;
   variable = [];
-  private stompClient = null;
 
   constructor(private http: HttpService,
               private router: Router,
@@ -86,9 +85,13 @@ export class CommandeComponent implements OnInit {
                this.model.total = this.model.total +  val.sub_total;
               });
           if ( this.etat_compte() === true ) {
+            this.model.client_id = this.utili.id;
+            console.log('voila envoyer');
             this.http.postHttp(url2, this.model, 2, this.utili).then(
               data => {
                 this.socketService.send('/service/newCommande', data);
+                this.servicedata.setCommande(null);
+                this.router.navigate(['/']);
               },
               error => {
                 console.log('Error #### ', error);
@@ -142,23 +145,24 @@ export class CommandeComponent implements OnInit {
     if ( this.utili.type === 1) {
       div = 3;
     }
-    if (this.utili.nom !== '') {
+    if (this.utili.nom !== '' && this.utili.nom !== null) {
       sum += 1;
 
     }
-    if (this.utili.prenom !== '') {
+    if (this.utili.prenom !== '' && this.utili.prenom !== null) {
       sum += 1;
 
     }
-    if ( this.utili.type === 1 && this.utili.adress !== '') {
+    if ( this.utili.type === 1 && (this.utili.adress !== '' && this.utili.adress !== null )) {
       sum += 1;
 
     }
 
     etat = sum / div ;
-    etat = etat.toFixed(2);
-
-    return etat === 1 ? true : false ;
+    console.log(etat === 1);
+    // etat = etat.toFixed(2);
+   // console.log(etat === 1);
+    return etat === 1 ;
   }
 }
 export interface CommandeView {
@@ -176,4 +180,5 @@ export interface LcView {
   quantite: number;
   prix_prod: number;
   sub_total: number;
+
 }

@@ -1,0 +1,42 @@
+<div mat-dialog-content>
+  <div class="container">
+    <div class="table-responsive">
+      <h2 class="text-center">{{data.titre}}</h2>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>nom_prod.</th>
+          <th>quantite</th>
+          <th>prix_prod max</th>
+          <th>sub_total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let l of cmd.lignes">
+          <td>{{l.nom_prod}}</td>
+          <td>{{l.quantite}}</td>
+          <td>{{l.prix_prod}}</td>
+          <td>{{l.sub_total}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions style="position: center;">
+  <button mat-raised-button color="warn" (click)="onNoClick()">Annuler</button>
+  <button mat-raised-button color="primary"  (click)="AccepterCmd(true)" cdkFocusInitial>Accepter</button>
+  <button mat-raised-button color="primary"  (click)="AccepterCmd(false)" cdkFocusInitial>Decliner</button>
+</div>
+
+<!--
+<div mat-dialog-content>
+  <p>Saisie votre mot de passe pour confirmer la modification </p>
+  <mat-form-field style="position: center;width:90%;">
+    <input matInput type="password" placeholder="Mot de passe" [(ngModel)]="data.password">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions style="position: center;">
+  <button mat-raised-button color="warn" (click)="onNoClick()">Annuler</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data.password" cdkFocusInitial>Confirmer</button>
+</div>-->

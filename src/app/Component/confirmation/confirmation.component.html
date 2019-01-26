@@ -1,0 +1,32 @@
+<div mat-dialog-content>
+  <div class="container">
+    <div class="table-responsive">
+      <h2 class="text-center">{{data.titre}}</h2>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>nom_prod.</th>
+          <th>quantite</th>
+          <th>prix_prod max</th>
+          <th>sub_total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let l of cmd.lignes">
+          <td>{{l.nom_prod}}</td>
+          <td>{{l.quantite}}</td>
+          <td>{{l.prix_prod}}</td>
+          <td>{{l.sub_total}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 class="text-center">veuillez confirmer votre choix</h2>
+
+</div>
+<div mat-dialog-actions style="position: center;">
+  <button mat-raised-button color="primary"  (click)="ChangeEtat(true)" cdkFocusInitial>Passé à l'etat {{etatSuivante}}</button>
+  <button mat-raised-button color="primary"  (click)="ChangeEtat(false)" cdkFocusInitial>rester dans l'etat {{etatActuel}}</button>
+</div>
