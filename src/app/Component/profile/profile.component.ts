@@ -76,7 +76,8 @@ export class ProfileComponent implements OnInit {
     plus = 0;
     sign = 0;
   listeRecommande = [];
-
+  allliv = null;
+  allcli = null;
   constructor(public auth: AuthentificationService, public http: HttpService,
               private router: Router, public dialog: MatDialog,
               private toast: ToastService, private socketservice: SocketService, private servicedata: DataService) {
@@ -159,8 +160,10 @@ export class ProfileComponent implements OnInit {
             this.ChargerClientSignaler(this.model.signales);
           }
         if (this.model.type === 1 && this.model.commandes.length !== 0) {
+          this.chargerLivreur();
           this.chargerLivreurName(this.model.commandes);
         } else if (this.model.type === 2 && this.model.commandes.length !== 0) {
+          this.chargerClient();
           this.chargerClientName(this.model.commandes);
         }
         if (this.model.type === 1 ) {
@@ -172,6 +175,49 @@ export class ProfileComponent implements OnInit {
     this.auth.Logout();
     this.router.navigate(['/signin']);
   }
+  chargerLivreur(): void {
+    const url = 'http://localhost:8080/app/livreur/all';
+    this.http.getHttp(url, 1, null).then(
+      data => {
+        this.allliv = data;
+      }, err => {
+        console.log('Error', err);
+      }
+    );
+  }
+  nomLivreur(cmd) {
+    if (this.allliv !== null) {
+      for (let i = 0; i < this.allliv.length; i++) {
+        console.log(this.allliv[i].id + ' fff ' + cmd.livreur_id);
+        if (cmd.livreur_id === this.allliv[i].id) {
+          cmd.livreur = this.allliv[i];
+          return this.allliv[i];
+        }
+      }
+    }
+  }
+  chargerClient(): void {
+    const url = 'http://localhost:8080/app/client/all';
+    this.http.getHttp(url, 1, null).then(
+      data => {
+        this.allcli = data;
+      }, err => {
+        console.log('Error', err);
+      }
+    );
+  }
+  nomClient(cmd) {
+    if (this.allcli !== null) {
+      for (let i = 0; i < this.allcli.length; i++) {
+        console.log(this.allcli[i].id + ' fff ' + cmd.client_id);
+        if (cmd.client_id === this.allcli[i].id) {
+          cmd.client = this.allcli[i];
+          return this.allcli[i];
+        }
+      }
+    }
+  }
+
   chargerLivreurName(table: any) {
     const url = 'http://localhost:8080/app/livreur';
 
@@ -203,7 +249,6 @@ export class ProfileComponent implements OnInit {
                 break;
 
             }
-
           }
 
         }, err => {
@@ -247,10 +292,8 @@ export class ProfileComponent implements OnInit {
               case 3:
                 table[i].classe = 'succes';
                 break;
-
             }
           }
-
         }, err => {
 
         });
@@ -396,19 +439,14 @@ export class ProfileComponent implements OnInit {
                 this.http.patchHttp(url, this.formEdit, 2, this.utili).then(
                   res => {
                     if (res !== null) {
-                      /*const token = this.utili.token;
-                      this.utili = res;
-                      this.utili.token = token;
-                      this.auth.setUser(this.utili);*/
                       this.socketservice.send('/service/updateCli', res);
                       (async () => {
                         // Do something before delay
-                        console.log('before delay')
-
-                        await this.socketservice.delay(200);
+                        console.log('before delay');
+                        await this.socketservice.delay(1000);
 
                         // Do something after
-                        console.log('after delay')
+                        console.log('after delay');
                         this.init();
                         this.toast.CreateToast('success', 'Modification effectuée', 'Votre modification est enregistrer');
                       })();
@@ -445,12 +483,12 @@ export class ProfileComponent implements OnInit {
                   this.socketservice.send('/service/updateLiv', res);
                   (async () => {
                     // Do something before delay
-                    console.log('before delay')
+                    console.log('before delay');
 
                     await this.socketservice.delay(200);
 
                     // Do something after
-                    console.log('after delay')
+                    console.log('after delay');
                     this.init();
                     this.toast.CreateToast('success', 'Modification effectuée', 'Votre modification est enregistrer');
                   })();
@@ -677,8 +715,12 @@ export class ProfileComponent implements OnInit {
     }
   }
   ShowFormRecommandation() {
+    if (this.listeRecommande.length > 0) {
 
-    this.DisplayRecommande  === true ? this.DisplayRecommande = false : this.DisplayRecommande = true;
+      this.DisplayRecommande  === true ? this.DisplayRecommande = false : this.DisplayRecommande = true;
+    } else {
+      this.toast.CreateToast('warning', 'Recommandation', 'la liste des livreurs est vide');
+    }
 
   }
   AddRecommander(liv, id_liv) {
@@ -740,7 +782,6 @@ export class ProfileComponent implements OnInit {
               }
               break;
       case 4: if (this.auth.getTypeCompte() === 1) {
-                console.log('qsdfghjklm======================qsdfghjklm');
                 this.servicedata.setCommande(cmd);
                 this.router.navigate(['/livreur']);
               }

@@ -130,11 +130,11 @@
                       <div class="job-details h-100 ">
                         <div class="p-3 align-self-center">
                           <h3>{{cmd.titre}}</h3>
-                          <h6 *ngIf="model.type == 1 && cmd.livreur !== undefined ">livré par : {{cmd.livreur.nom + " " + cmd.livreur.prenom}}</h6>
-                          <h6 *ngIf="model.type == 2 && cmd.client !== undefined ">livré à : {{cmd.client.nom + " " + cmd.client.prenom}}</h6>
+                          <h6 *ngIf="model.type == 1 && nomLivreur(cmd) !== undefined">livré par : {{cmd.livreur.nom + " " + nomLivreur(cmd).prenom}}</h6>
+                          <h6 *ngIf="model.type == 2 && nomClient(cmd) !== undefined">livré à : {{cmd.client.nom + " " + nomClient(cmd).prenom}}</h6>
                           <div class="d-block d-lg-flex">
                             <div class="mr-3"><span class="icon-suitcase mr-1"></span> {{cmd.lignes.length}} Produits</div>
-                            <div class="mr-3"><span class="icon-room mr-1"></span> Commition : {{cmd.comition}} DH</div>
+                            <div class="mr-3"><span class="icon-room mr-1"></span> Commition : {{cmd.total>100?(cmd.total*0.10).toFixed(2): 25}} DH</div>
                             <div><span class="icon-money mr-1"></span> Total HT : {{(cmd.total).toFixed(2) }} DH</div>
                           </div>
                         </div>

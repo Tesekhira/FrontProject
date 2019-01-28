@@ -7,6 +7,7 @@ import {ToastService} from '../../Service/Toast/toast.service';
 import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {SocketService} from '../../Service/Socket/socket.service';
+import {async} from 'q';
 @Component({
   selector: 'app-commande',
   templateUrl: './commande.component.html',
@@ -32,6 +33,10 @@ export class CommandeComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.isLoggedIn()) {
+      if (this.auth.getTypeCompte() === 2) {
+        this.toast.CreateToast('error', 'Livreur', 'Vous êtes un Livreur vous ne pouvez pas accéder à la page Commande ');
+        this.router.navigate( ['/']);
+      }
       this.utili = this.auth.getUser();
       this.model = {
         titre : '',
@@ -62,9 +67,14 @@ export class CommandeComponent implements OnInit {
       this.model = this.tmp;
     }
   }
-
-
-
+  Total(): number {
+    this.model.total = 0;
+    this.model.lignes.map(val => {
+      val.sub_total =  val.quantite * val.prix_prod;
+      this.model.total = this.model.total +  val.sub_total;
+    });
+    return this.model.total;
+  }
   envoyer(): void {
     const url2 = 'http://localhost:8080/app/cmd/create';
     this.msgerr = '';
@@ -73,36 +83,35 @@ export class CommandeComponent implements OnInit {
         (this.livreur.etat_compte === 0 ) ||
         ((this.livreur.etat_compte === 2) && (this.model.type_cmd === 0))) {
          if (this.auth.isLoggedIn() === true)  {
-           if (this.Commande) {
-             this.model.type_cmd = 1;
+           if (this.auth.getTypeCompte() === 2) {
+             this.toast.CreateToast('error', 'Compte Livreur', 'Vous dever avoir une compte Client');
            } else {
-             this.model.type_cmd = 0;
+             if (this.Commande) {
+               this.model.type_cmd = 1;
+             } else {
+               this.model.type_cmd = 0;
+             }
+
+             this.model.livreur_id = this.livreur.id;
+             if ( this.etat_compte() === true ) {
+               this.model.client_id = this.utili.id;
+               console.log('voila envoyer');
+               this.http.postHttp(url2, this.model, 2, this.utili).then(
+                 data => {
+                   this.socketService.send('/service/newCommande', data);
+                   this.servicedata.setCommande(null);
+                   this.router.navigate(['/']);
+                 },
+                 error => {
+                   console.log('Error #### ', error);
+                 }
+               );
+             } else {
+               this.toast.CreateToast('warning', 'Commande annuler', 'Merci de remplir les informations de votre profile');
+               this.servicedata.setCommande(this.model);
+               this.router.navigate(['/profile']);
+             }
            }
-
-           this.model.livreur_id = this.livreur.id;
-           this.model.lignes.map(val => {
-               val.sub_total =  val.quantite * val.prix_prod;
-               this.model.total = this.model.total +  val.sub_total;
-              });
-          if ( this.etat_compte() === true ) {
-            this.model.client_id = this.utili.id;
-            console.log('voila envoyer');
-            this.http.postHttp(url2, this.model, 2, this.utili).then(
-              data => {
-                this.socketService.send('/service/newCommande', data);
-                this.servicedata.setCommande(null);
-                this.router.navigate(['/']);
-              },
-              error => {
-                console.log('Error #### ', error);
-              }
-            );
-          } else {
-            this.toast.CreateToast('warning', 'Commande annuler', 'Merci de remplir les informations de votre profile');
-            this.servicedata.setCommande(this.model);
-            this.router.navigate(['/profile']);
-          }
-
          } else {
            this.servicedata.setCommande(this.model);
            this.router.navigate(['/signin']);

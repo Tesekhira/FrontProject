@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AuthentificationService} from '../../Service/Authentification/authentification.service';
 import {DataService} from '../../Service/Data/data.service';
+import {ToastService} from '../../Service/Toast/toast.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,8 +17,12 @@ export class SignInComponent implements OnInit {
    };
    emailIncorrect: Number = 0;
   constructor(private http: HttpClient, private router: Router, public auth: AuthentificationService,
-              private servicedata: DataService) { }
+              private servicedata: DataService, private toast: ToastService) { }
   ngOnInit() {
+    if (this.auth.isLoggedIn()) {
+      this.toast.CreateToast('info', 'Connection', 'Vous êtes déjà connecté ');
+      this.router.navigate( ['/']);
+    }
   }
 
   authentifier(): void {
