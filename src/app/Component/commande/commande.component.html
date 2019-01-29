@@ -34,8 +34,8 @@
       <input matInput placeholder="Titre commande" required [(ngModel)]="model.titre" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
 
-    <div *ngFor="let l of model.lignes;index as i" [id]="i">
-      <mat-card class="matcardLC" >
+    <div *ngFor="let l of model.lignes;index as i" [id]="i" class="matcardLC" >
+      <mat-card >
         <button mat-fab  class="deleteLC" *ngIf="model.lignes.length>1" (click)="deleteLC(i)">
           <mat-icon >delete_forever</mat-icon>
         </button>
@@ -46,16 +46,17 @@
           <input matInput placeholder="Produit " required [(ngModel)]="l.nom_prod" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Quantité " required [(ngModel)]="l.quantite" [ngModelOptions]="{standalone: true}">
+          <input type="number" matInput placeholder="Quantité " required [(ngModel)]="l.quantite" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Prix Maximal " required [(ngModel)]="l.prix_prod" [ngModelOptions]="{standalone: true}">
+          <input type="number" matInput placeholder="Prix Maximal " required [(ngModel)]="l.prix_prod" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
+
+        sous total - {{i+1}} : {{(l.prix_prod*l.quantite).toFixed(2)}} DH
 
         <button mat-fab  class="addlC" color="accent" *ngIf="i==(model.lignes.length-1)" (click)="addLC()">
           <mat-icon>add</mat-icon>
         </button>
-
       </mat-card>
 
     </div>
@@ -63,8 +64,8 @@
           <input type="checkbox" [(ngModel)]="Commande" [ngModelOptions]="{standalone: true}">
           <span class="checkmark"></span>
         </label>
-
-
+        <b>Total de la commande : {{Total().toFixed(2)}} DH</b>
+        <br>
     <button mat-raised-button  color="accent" type="submit">envoyer commande</button>
   </form>
 

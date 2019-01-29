@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AuthentificationService} from '../../Service/Authentification/authentification.service';
+import {DataService} from '../../Service/Data/data.service';
+import {ToastService} from '../../Service/Toast/toast.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -18,9 +20,13 @@ export class SignUpComponent implements OnInit {
   };
   pass2Error = false;
   emailIncorrect: Number = 0;
-  constructor(public auth: AuthentificationService, private router: Router) { }
+  constructor(public auth: AuthentificationService, private router: Router, private toast: ToastService) { }
 
   ngOnInit() {
+    if (this.auth.isLoggedIn()) {
+      this.toast.CreateToast('info', 'Connection', 'Vous êtes déjà connecté ');
+      this.router.navigate( ['/']);
+    }
   }
 
   Inscrire(): void {

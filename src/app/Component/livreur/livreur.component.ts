@@ -19,7 +19,11 @@ export class LivreurComponent implements OnInit {
   moin = [];
   plus = [];
   input = '';
-  constructor(public http: HttpService, private router: Router, private Send: DataService, private auth: AuthentificationService, private toast: ToastService) { }
+  constructor(public http: HttpService,
+              private router: Router,
+              private Send: DataService,
+              private auth: AuthentificationService,
+              private toast: ToastService) { }
 
   ngOnInit() {
     this.chargerLivreur();
@@ -95,9 +99,9 @@ export class LivreurComponent implements OnInit {
     this.livreurs = [];
     if (this.input !== '') {
       for (i = 0; i < this.all.length; i++) {
-        if ((this.all[i].nom.toUpperCase().indexOf(this.input.toUpperCase()) > -1) ||
-          (this.all[i].prenom.toUpperCase().indexOf(this.input.toUpperCase()) > -1) ||
-          (this.all[i].email.toUpperCase().indexOf(this.input.toUpperCase()) > -1)) {
+        if (((this.all[i].nom != null) && (this.all[i].nom.toUpperCase().indexOf(this.input.toUpperCase()) > -1 )) ||
+          ((this.all[i].prenom != null) && (this.all[i].prenom.toUpperCase().indexOf(this.input.toUpperCase()) > -1)) ||
+          ((this.all[i].email != null) && (this.all[i].email.toUpperCase().indexOf(this.input.toUpperCase()) > -1))) {
           this.livreurs[this.livreurs.length] = this.all[i];
         }
 
